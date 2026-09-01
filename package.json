@@ -1,0 +1,35 @@
+{
+  "name": "amavie",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.4",
+  "scripts": {
+    "dev:w": "pnpm --filter @amavie/web dev",
+    "dev:b": "pnpm --filter @amavie/backoffice dev",
+    "build:w": "pnpm --filter @amavie/web build",
+    "build:b": "pnpm --filter @amavie/backoffice build",
+    "start:w": "pnpm --filter @amavie/web start",
+    "start:b": "pnpm --filter @amavie/backoffice start",
+    "lint:w": "pnpm --filter @amavie/web lint",
+    "lint:b": "pnpm --filter @amavie/backoffice lint",
+    "test:w": "pnpm --filter @amavie/web test",
+    "test:b": "pnpm --filter @amavie/backoffice test",
+    "build": "pnpm -r --filter './apps/**' build",
+    "lint": "pnpm -r --filter './apps/**' lint",
+    "test": "pnpm -r --filter './apps/**' test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:generate": "pnpm --filter @amavie/database generate",
+    "db:migrate": "pnpm --filter @amavie/database migrate",
+    "db:studio": "pnpm --filter @amavie/database studio",
+    "db:reset": "pnpm --filter @amavie/database reset"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.6"
+  }
+}

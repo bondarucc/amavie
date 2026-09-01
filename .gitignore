@@ -1,0 +1,11 @@
+node_modules
+.next
+.env*
+.DS_Store
+.swc
+*.tsbuildinfo
+.cursorignore
+.vscode
+next-env.d.ts
+storage
+.cursor/*.log
