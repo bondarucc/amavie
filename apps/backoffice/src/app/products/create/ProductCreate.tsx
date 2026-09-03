@@ -1,12 +1,13 @@
 "use client";
 
-import { useActionState } from "react";
+import { Fragment, useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { createProduct, type CreateProductState } from "./action";
 import {
   CreateProductFormProvider,
   useCreateProductForm,
+  type ImageItem,
 } from "./CreateProductFormContext";
 import { ModelFields } from "./ModelFields";
 import { ProductTabs } from "./ProductTabs";
@@ -39,6 +40,8 @@ function CreateProductForm({
   pending: boolean;
   formError: string | undefined;
 }) {
+  const { canSubmit } = useCreateProductForm();
+
   return (
     <form action={formAction}>
       <FormHiddenInputs />
@@ -46,8 +49,12 @@ function CreateProductForm({
         <ModelFields />
         <ProductTabs />
         {formError && <FieldError>{formError}</FieldError>}
-        <Button type="submit" disabled={pending}>
-          {pending ? "Создание…" : "Создать модель"}
+        <Button type="submit" disabled={pending || !canSubmit}>
+          {pending
+            ? "Создание…"
+            : !canSubmit
+              ? "Дождитесь загрузки изображений…"
+              : "Создать модель"}
         </Button>
       </FieldGroup>
     </form>
@@ -71,6 +78,7 @@ function FormHiddenInputs() {
           fabric={product.fabric}
           sizes={product.sizes}
           colors={product.colors}
+          images={product.images}
         />
       ))}
     </>
@@ -84,6 +92,7 @@ function ProductHiddenInputs({
   fabric,
   sizes,
   colors,
+  images,
 }: {
   index: number;
   externalId: string;
@@ -91,6 +100,7 @@ function ProductHiddenInputs({
   fabric: string;
   sizes: string[];
   colors: string[];
+  images: Record<string, ImageItem[]>;
 }) {
   return (
     <>
@@ -121,6 +131,34 @@ function ProductHiddenInputs({
           value={color}
         />
       ))}
+      {colors.map((color, colorIndex) => {
+        const items = (images[color] ?? []).filter(
+          (item) => item.status === "success" && item.id && item.filename,
+        );
+        return (
+          <Fragment key={color}>
+            <input
+              type="hidden"
+              name={`products.${index}.imageGroups.${colorIndex}.color`}
+              value={color}
+            />
+            {items.map((item) => (
+              <Fragment key={item.localId}>
+                <input
+                  type="hidden"
+                  name={`products.${index}.imageGroups.${colorIndex}.ids`}
+                  value={item.id}
+                />
+                <input
+                  type="hidden"
+                  name={`products.${index}.imageGroups.${colorIndex}.filenames`}
+                  value={item.filename}
+                />
+              </Fragment>
+            ))}
+          </Fragment>
+        );
+      })}
     </>
   );
 }

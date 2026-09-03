@@ -61,3 +61,19 @@ export const SIZE_TYPE_LABELS: Record<SizeType, string> = {
 
 export const MODEL_TYPES = Object.values(ModelType);
 export const SIZE_TYPES = Object.values(SizeType);
+
+export const PRODUCT_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+
+export const PRODUCT_IMAGE_TYPES: Record<string, string> = {
+  "image/png": ".png",
+  "image/jpeg": ".jpg",
+};
+
+export const PRODUCT_IMAGE_ACCEPT = Object.keys(PRODUCT_IMAGE_TYPES).join(",");
+
+export const MIN_IMAGES_PER_COLOR = 1;
+export const MAX_IMAGES_PER_COLOR = 3;
+export const UPLOAD_CONCURRENCY = 5;
+
+export const PRODUCT_IMAGE_FILENAME_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(png|jpg)$/;

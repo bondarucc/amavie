@@ -83,25 +83,51 @@ export async function createProduct(
 
   const { type, name, sizeType, products } = parsed.data;
 
+  let modelId: string;
+
   try {
-    await prisma.model.create({
-      data: {
-        type,
-        name,
-        sizeType,
-        products: {
-          create: products.map((product) => ({
-            externalId: product.externalId,
-            description: product.description,
-            fabric: product.fabric,
-            variants: {
-              create: product.sizes.flatMap((size) =>
-                product.colors.map((color) => ({ size, color, stock: 0 })),
-              ),
-            },
-          })),
+    modelId = await prisma.$transaction(async (tx) => {
+      const model = await tx.model.create({
+        data: {
+          type,
+          name,
+          sizeType,
+          products: {
+            create: products.map((product) => ({
+              externalId: product.externalId,
+              description: product.description,
+              fabric: product.fabric,
+              variants: {
+                create: product.sizes.flatMap((size) =>
+                  product.colors.map((color) => ({ size, color, stock: 0 })),
+                ),
+              },
+            })),
+          },
         },
-      },
+        include: { products: true },
+      });
+
+      const images = model.products.flatMap((createdProduct) => {
+        const draft = products.find(
+          (product) => product.externalId === createdProduct.externalId,
+        );
+
+        return (draft?.images ?? []).flatMap((group) =>
+          group.items.map((item) => ({
+            id: item.id,
+            filename: item.filename,
+            color: group.color,
+            productId: createdProduct.id,
+          })),
+        );
+      });
+
+      if (images.length > 0) {
+        await tx.productImage.createMany({ data: images });
+      }
+
+      return model.id;
     });
   } catch (error) {
     const conflict = await conflictFieldErrors(error, products);
@@ -113,5 +139,5 @@ export async function createProduct(
   }
 
   revalidateTag(PRODUCTS_CACHE_TAG, { expire: 0 });
-  redirect("/products");
+  redirect(`/products/${modelId}`);
 }

@@ -4,12 +4,27 @@ import {
   DIMENSION_PATTERN,
   EXTERNAL_ID_PATTERN,
   LETTER_SIZES,
+  MAX_IMAGES_PER_COLOR,
+  MIN_IMAGES_PER_COLOR,
   NAME_PATTERN,
   NUMERIC_SIZES,
 } from "./const";
 
 const letterSizeSet = new Set<string>(LETTER_SIZES);
 const numericSizeSet = new Set<string>(NUMERIC_SIZES);
+
+const productImageGroupSchema = z.object({
+  color: z.string().trim().min(1),
+  items: z
+    .array(
+      z.object({
+        id: z.string().trim().min(1),
+        filename: z.string().trim().min(1),
+      }),
+    )
+    .min(MIN_IMAGES_PER_COLOR, "Добавьте хотя бы одно изображение")
+    .max(MAX_IMAGES_PER_COLOR, `Не более ${MAX_IMAGES_PER_COLOR} изображений на цвет`),
+});
 
 const productDraftSchema = z.object({
   externalId: z
@@ -24,6 +39,7 @@ const productDraftSchema = z.object({
   colors: z
     .array(z.string().trim().min(1))
     .min(1, "Добавьте хотя бы один цвет"),
+  images: z.array(productImageGroupSchema),
 });
 
 export const createProductSchema = z
@@ -72,6 +88,24 @@ export const createProductSchema = z
           });
         }
       }
+
+      const colorSet = new Set(product.colors);
+      const imageColorSet = new Set(product.images.map((group) => group.color));
+
+      const missingImages = product.colors.filter(
+        (color) => !imageColorSet.has(color),
+      );
+      const unknownImages = product.images.filter(
+        (group) => !colorSet.has(group.color),
+      );
+
+      if (missingImages.length > 0 || unknownImages.length > 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["products", productIndex, "images"],
+          message: "Для каждого цвета нужно от 1 до 3 изображений",
+        });
+      }
     }
   });
 
@@ -83,6 +117,7 @@ export type ProductFieldErrors = Partial<{
   fabric: string;
   sizes: string;
   colors: string;
+  images: string;
 }>;
 
 export type CreateProductState = {
@@ -94,6 +129,36 @@ export type CreateProductState = {
   };
   formError?: string;
 };
+
+function parseImageGroups(formData: FormData, productIndex: number) {
+  const groups = [];
+
+  for (
+    let colorIndex = 0;
+    formData.has(`products.${productIndex}.imageGroups.${colorIndex}.color`);
+    colorIndex++
+  ) {
+    const color = String(
+      formData.get(`products.${productIndex}.imageGroups.${colorIndex}.color`) ??
+        "",
+    );
+    const ids = formData
+      .getAll(`products.${productIndex}.imageGroups.${colorIndex}.ids`)
+      .map(String);
+    const filenames = formData
+      .getAll(
+        `products.${productIndex}.imageGroups.${colorIndex}.filenames`,
+      )
+      .map(String);
+
+    groups.push({
+      color,
+      items: ids.map((id, i) => ({ id, filename: filenames[i] ?? "" })),
+    });
+  }
+
+  return groups;
+}
 
 function parseProducts(formData: FormData) {
   const products = [];
@@ -111,6 +176,7 @@ function parseProducts(formData: FormData) {
         .getAll(`products.${index}.colors`)
         .map(String)
         .filter(Boolean),
+      images: parseImageGroups(formData, index),
     });
   }
 
@@ -146,7 +212,8 @@ export function fieldErrorsFromZod(
         third === "description" ||
         third === "fabric" ||
         third === "sizes" ||
-        third === "colors"
+        third === "colors" ||
+        third === "images"
           ? third
           : undefined;
 

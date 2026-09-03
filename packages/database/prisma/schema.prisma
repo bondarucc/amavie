@@ -61,6 +61,7 @@ model Product {
   description String
   fabric      String
   variants    ProductVariant[]
+  images      ProductImage[]
   model       Model            @relation(fields: [modelId], references: [id])
   modelId     String
 }
@@ -74,4 +75,15 @@ model ProductVariant {
   stock     Int     @default(0)
 
   @@unique([productId, size, color])
+}
+
+model ProductImage {
+  id        String   @id
+  filename  String
+  color     String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([productId, color])
 }
