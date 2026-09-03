@@ -3,51 +3,72 @@
 import { Prisma } from "@amavie/database";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { PRODUCTS_CACHE_TAG } from "../const";
-import { parseCreateProductForm } from "../schema";
+import {
+  fieldErrorsFromZod,
+  parseCreateProductForm,
+  type CreateProductInput,
+  type CreateProductState,
+  type ProductFieldErrors,
+} from "../schema";
 
-export type CreateProductField =
-  | "type"
-  | "modelNumber"
-  | "name"
-  | "description"
-  | "fabric"
-  | "sizeType"
-  | "sizes"
-  | "colors";
+export type { CreateProductState, ProductFieldErrors };
 
-export type CreateProductState = {
-  fieldErrors?: Partial<Record<CreateProductField, string>>;
-  formError?: string;
-};
+function uniqueConstraintFields(error: unknown): string[] {
+  if (
+    !(error instanceof Prisma.PrismaClientKnownRequestError) ||
+    error.code !== "P2002"
+  ) {
+    return [];
+  }
 
-function fieldErrorsFromZod(
-  error: z.ZodError,
-): CreateProductState["fieldErrors"] {
-  const { fieldErrors } = z.flattenError(error) as {
-    fieldErrors: Partial<Record<string, string[]>>;
-  };
-  const pick = (key: CreateProductField) => fieldErrors[key]?.[0];
-
-  return {
-    type: pick("type"),
-    modelNumber: pick("modelNumber"),
-    name: pick("name"),
-    description: pick("description"),
-    fabric: pick("fabric"),
-    sizeType: pick("sizeType"),
-    sizes: pick("sizes"),
-    colors: pick("colors"),
-  };
+  const target = error.meta?.target;
+  if (Array.isArray(target)) {
+    return target.map(String);
+  }
+  if (typeof target === "string") {
+    return [target];
+  }
+  return [];
 }
 
-function isModelNumberConflict(error: unknown) {
-  return (
-    error instanceof Prisma.PrismaClientKnownRequestError &&
-    error.code === "P2002"
-  );
+async function conflictFieldErrors(
+  error: unknown,
+  products: CreateProductInput["products"],
+): Promise<CreateProductState | undefined> {
+  const fields = uniqueConstraintFields(error);
+  if (fields.length === 0) {
+    return undefined;
+  }
+
+  if (fields.includes("name")) {
+    return {
+      fieldErrors: { name: "Модель с таким названием уже существует" },
+    };
+  }
+
+  if (fields.includes("externalId")) {
+    const existing = await prisma.product.findMany({
+      where: {
+        externalId: { in: products.map((product) => product.externalId) },
+      },
+      select: { externalId: true },
+    });
+    const taken = new Set(existing.map((product) => product.externalId));
+    if (taken.size === 0) {
+      return { formError: "Товар с таким артикулом уже существует" };
+    }
+    const productErrors: ProductFieldErrors[] = products.map((product) =>
+      taken.has(product.externalId)
+        ? { externalId: "Товар с таким артикулом уже существует" }
+        : {},
+    );
+
+    return { fieldErrors: { products: productErrors } };
+  }
+
+  return undefined;
 }
 
 export async function createProduct(
@@ -56,49 +77,39 @@ export async function createProduct(
 ): Promise<CreateProductState> {
   const parsed = parseCreateProductForm(formData);
 
-  console.log(parsed);
-
   if (!parsed.success) {
     return { fieldErrors: fieldErrorsFromZod(parsed.error) };
   }
 
-  const {
-    type,
-    modelNumber,
-    name,
-    description,
-    fabric,
-    sizeType,
-    sizes,
-    colors,
-  } = parsed.data;
+  const { type, name, sizeType, products } = parsed.data;
 
   try {
-    await prisma.product.create({
+    await prisma.model.create({
       data: {
         type,
-        modelNumber,
         name,
-        description,
-        fabric,
         sizeType,
-        variants: {
-          create: sizes.flatMap((size) =>
-            colors.map((color) => ({ size, color, stock: 0 })),
-          ),
+        products: {
+          create: products.map((product) => ({
+            externalId: product.externalId,
+            description: product.description,
+            fabric: product.fabric,
+            variants: {
+              create: product.sizes.flatMap((size) =>
+                product.colors.map((color) => ({ size, color, stock: 0 })),
+              ),
+            },
+          })),
         },
       },
     });
   } catch (error) {
-    if (isModelNumberConflict(error)) {
-      return {
-        fieldErrors: { modelNumber: "Товар с таким артикулом уже существует" },
-      };
+    const conflict = await conflictFieldErrors(error, products);
+    if (conflict) {
+      return conflict;
     }
 
-    console.log(error);
-
-    return { formError: "Не удалось создать товар" };
+    return { formError: "Не удалось создать модель" };
   }
 
   revalidateTag(PRODUCTS_CACHE_TAG, { expire: 0 });

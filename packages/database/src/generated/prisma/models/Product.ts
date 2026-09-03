@@ -26,76 +26,52 @@ export type AggregateProduct = {
 
 export type ProductMinAggregateOutputType = {
   id: string | null
-  type: $Enums.ProductType | null
-  modelNumber: string | null
-  name: string | null
+  externalId: string | null
   description: string | null
   fabric: string | null
-  sizeType: $Enums.SizeType | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  modelId: string | null
 }
 
 export type ProductMaxAggregateOutputType = {
   id: string | null
-  type: $Enums.ProductType | null
-  modelNumber: string | null
-  name: string | null
+  externalId: string | null
   description: string | null
   fabric: string | null
-  sizeType: $Enums.SizeType | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  modelId: string | null
 }
 
 export type ProductCountAggregateOutputType = {
   id: number
-  type: number
-  modelNumber: number
-  name: number
+  externalId: number
   description: number
   fabric: number
-  sizeType: number
-  createdAt: number
-  updatedAt: number
+  modelId: number
   _all: number
 }
 
 
 export type ProductMinAggregateInputType = {
   id?: true
-  type?: true
-  modelNumber?: true
-  name?: true
+  externalId?: true
   description?: true
   fabric?: true
-  sizeType?: true
-  createdAt?: true
-  updatedAt?: true
+  modelId?: true
 }
 
 export type ProductMaxAggregateInputType = {
   id?: true
-  type?: true
-  modelNumber?: true
-  name?: true
+  externalId?: true
   description?: true
   fabric?: true
-  sizeType?: true
-  createdAt?: true
-  updatedAt?: true
+  modelId?: true
 }
 
 export type ProductCountAggregateInputType = {
   id?: true
-  type?: true
-  modelNumber?: true
-  name?: true
+  externalId?: true
   description?: true
   fabric?: true
-  sizeType?: true
-  createdAt?: true
-  updatedAt?: true
+  modelId?: true
   _all?: true
 }
 
@@ -173,14 +149,10 @@ export type ProductGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ProductGroupByOutputType = {
   id: string
-  type: $Enums.ProductType
-  modelNumber: string
-  name: string
+  externalId: string
   description: string
   fabric: string
-  sizeType: $Enums.SizeType
-  createdAt: Date
-  updatedAt: Date
+  modelId: string
   _count: ProductCountAggregateOutputType | null
   _min: ProductMinAggregateOutputType | null
   _max: ProductMaxAggregateOutputType | null
@@ -206,56 +178,43 @@ export type ProductWhereInput = {
   OR?: Prisma.ProductWhereInput[]
   NOT?: Prisma.ProductWhereInput | Prisma.ProductWhereInput[]
   id?: Prisma.StringFilter<"Product"> | string
-  type?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
-  modelNumber?: Prisma.StringFilter<"Product"> | string
-  name?: Prisma.StringFilter<"Product"> | string
+  externalId?: Prisma.StringFilter<"Product"> | string
   description?: Prisma.StringFilter<"Product"> | string
   fabric?: Prisma.StringFilter<"Product"> | string
-  sizeType?: Prisma.EnumSizeTypeFilter<"Product"> | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  modelId?: Prisma.StringFilter<"Product"> | string
   variants?: Prisma.ProductVariantListRelationFilter
+  model?: Prisma.XOR<Prisma.ModelScalarRelationFilter, Prisma.ModelWhereInput>
 }
 
 export type ProductOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  modelNumber?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   fabric?: Prisma.SortOrder
-  sizeType?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  modelId?: Prisma.SortOrder
   variants?: Prisma.ProductVariantOrderByRelationAggregateInput
+  model?: Prisma.ModelOrderByWithRelationInput
 }
 
 export type ProductWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  modelNumber?: string
+  externalId?: string
   AND?: Prisma.ProductWhereInput | Prisma.ProductWhereInput[]
   OR?: Prisma.ProductWhereInput[]
   NOT?: Prisma.ProductWhereInput | Prisma.ProductWhereInput[]
-  type?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
-  name?: Prisma.StringFilter<"Product"> | string
   description?: Prisma.StringFilter<"Product"> | string
   fabric?: Prisma.StringFilter<"Product"> | string
-  sizeType?: Prisma.EnumSizeTypeFilter<"Product"> | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  modelId?: Prisma.StringFilter<"Product"> | string
   variants?: Prisma.ProductVariantListRelationFilter
-}, "id" | "modelNumber">
+  model?: Prisma.XOR<Prisma.ModelScalarRelationFilter, Prisma.ModelWhereInput>
+}, "id" | "externalId">
 
 export type ProductOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  modelNumber?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   fabric?: Prisma.SortOrder
-  sizeType?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  modelId?: Prisma.SortOrder
   _count?: Prisma.ProductCountOrderByAggregateInput
   _max?: Prisma.ProductMaxOrderByAggregateInput
   _min?: Prisma.ProductMinOrderByAggregateInput
@@ -266,138 +225,103 @@ export type ProductScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProductScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProductScalarWhereWithAggregatesInput | Prisma.ProductScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Product"> | string
-  type?: Prisma.EnumProductTypeWithAggregatesFilter<"Product"> | $Enums.ProductType
-  modelNumber?: Prisma.StringWithAggregatesFilter<"Product"> | string
-  name?: Prisma.StringWithAggregatesFilter<"Product"> | string
+  externalId?: Prisma.StringWithAggregatesFilter<"Product"> | string
   description?: Prisma.StringWithAggregatesFilter<"Product"> | string
   fabric?: Prisma.StringWithAggregatesFilter<"Product"> | string
-  sizeType?: Prisma.EnumSizeTypeWithAggregatesFilter<"Product"> | $Enums.SizeType
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
+  modelId?: Prisma.StringWithAggregatesFilter<"Product"> | string
 }
 
 export type ProductCreateInput = {
   id?: string
-  type: $Enums.ProductType
-  modelNumber: string
-  name: string
+  externalId: string
   description: string
   fabric: string
-  sizeType: $Enums.SizeType
-  createdAt?: Date | string
-  updatedAt?: Date | string
   variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
+  model: Prisma.ModelCreateNestedOneWithoutProductsInput
 }
 
 export type ProductUncheckedCreateInput = {
   id?: string
-  type: $Enums.ProductType
-  modelNumber: string
-  name: string
+  externalId: string
   description: string
   fabric: string
-  sizeType: $Enums.SizeType
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  modelId: string
   variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type ProductUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-  modelNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   fabric?: Prisma.StringFieldUpdateOperationsInput | string
-  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
+  model?: Prisma.ModelUpdateOneRequiredWithoutProductsNestedInput
 }
 
 export type ProductUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-  modelNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   fabric?: Prisma.StringFieldUpdateOperationsInput | string
-  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelId?: Prisma.StringFieldUpdateOperationsInput | string
   variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type ProductCreateManyInput = {
   id?: string
-  type: $Enums.ProductType
-  modelNumber: string
-  name: string
+  externalId: string
   description: string
   fabric: string
-  sizeType: $Enums.SizeType
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  modelId: string
 }
 
 export type ProductUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-  modelNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   fabric?: Prisma.StringFieldUpdateOperationsInput | string
-  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ProductUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-  modelNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   fabric?: Prisma.StringFieldUpdateOperationsInput | string
-  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ProductListRelationFilter = {
+  every?: Prisma.ProductWhereInput
+  some?: Prisma.ProductWhereInput
+  none?: Prisma.ProductWhereInput
+}
+
+export type ProductOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type ProductCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  modelNumber?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   fabric?: Prisma.SortOrder
-  sizeType?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  modelId?: Prisma.SortOrder
 }
 
 export type ProductMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  modelNumber?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   fabric?: Prisma.SortOrder
-  sizeType?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  modelId?: Prisma.SortOrder
 }
 
 export type ProductMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  modelNumber?: Prisma.SortOrder
-  name?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   fabric?: Prisma.SortOrder
-  sizeType?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  modelId?: Prisma.SortOrder
 }
 
 export type ProductScalarRelationFilter = {
@@ -405,12 +329,46 @@ export type ProductScalarRelationFilter = {
   isNot?: Prisma.ProductWhereInput
 }
 
-export type EnumProductTypeFieldUpdateOperationsInput = {
-  set?: $Enums.ProductType
+export type ProductCreateNestedManyWithoutModelInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutModelInput, Prisma.ProductUncheckedCreateWithoutModelInput> | Prisma.ProductCreateWithoutModelInput[] | Prisma.ProductUncheckedCreateWithoutModelInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutModelInput | Prisma.ProductCreateOrConnectWithoutModelInput[]
+  createMany?: Prisma.ProductCreateManyModelInputEnvelope
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
 }
 
-export type EnumSizeTypeFieldUpdateOperationsInput = {
-  set?: $Enums.SizeType
+export type ProductUncheckedCreateNestedManyWithoutModelInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutModelInput, Prisma.ProductUncheckedCreateWithoutModelInput> | Prisma.ProductCreateWithoutModelInput[] | Prisma.ProductUncheckedCreateWithoutModelInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutModelInput | Prisma.ProductCreateOrConnectWithoutModelInput[]
+  createMany?: Prisma.ProductCreateManyModelInputEnvelope
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+}
+
+export type ProductUpdateManyWithoutModelNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutModelInput, Prisma.ProductUncheckedCreateWithoutModelInput> | Prisma.ProductCreateWithoutModelInput[] | Prisma.ProductUncheckedCreateWithoutModelInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutModelInput | Prisma.ProductCreateOrConnectWithoutModelInput[]
+  upsert?: Prisma.ProductUpsertWithWhereUniqueWithoutModelInput | Prisma.ProductUpsertWithWhereUniqueWithoutModelInput[]
+  createMany?: Prisma.ProductCreateManyModelInputEnvelope
+  set?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  disconnect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  delete?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  update?: Prisma.ProductUpdateWithWhereUniqueWithoutModelInput | Prisma.ProductUpdateWithWhereUniqueWithoutModelInput[]
+  updateMany?: Prisma.ProductUpdateManyWithWhereWithoutModelInput | Prisma.ProductUpdateManyWithWhereWithoutModelInput[]
+  deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+}
+
+export type ProductUncheckedUpdateManyWithoutModelNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutModelInput, Prisma.ProductUncheckedCreateWithoutModelInput> | Prisma.ProductCreateWithoutModelInput[] | Prisma.ProductUncheckedCreateWithoutModelInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutModelInput | Prisma.ProductCreateOrConnectWithoutModelInput[]
+  upsert?: Prisma.ProductUpsertWithWhereUniqueWithoutModelInput | Prisma.ProductUpsertWithWhereUniqueWithoutModelInput[]
+  createMany?: Prisma.ProductCreateManyModelInputEnvelope
+  set?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  disconnect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  delete?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  update?: Prisma.ProductUpdateWithWhereUniqueWithoutModelInput | Prisma.ProductUpdateWithWhereUniqueWithoutModelInput[]
+  updateMany?: Prisma.ProductUpdateManyWithWhereWithoutModelInput | Prisma.ProductUpdateManyWithWhereWithoutModelInput[]
+  deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
 }
 
 export type ProductCreateNestedOneWithoutVariantsInput = {
@@ -427,28 +385,73 @@ export type ProductUpdateOneRequiredWithoutVariantsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutVariantsInput, Prisma.ProductUpdateWithoutVariantsInput>, Prisma.ProductUncheckedUpdateWithoutVariantsInput>
 }
 
-export type ProductCreateWithoutVariantsInput = {
+export type ProductCreateWithoutModelInput = {
   id?: string
-  type: $Enums.ProductType
-  modelNumber: string
-  name: string
+  externalId: string
   description: string
   fabric: string
-  sizeType: $Enums.SizeType
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
+}
+
+export type ProductUncheckedCreateWithoutModelInput = {
+  id?: string
+  externalId: string
+  description: string
+  fabric: string
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
+}
+
+export type ProductCreateOrConnectWithoutModelInput = {
+  where: Prisma.ProductWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductCreateWithoutModelInput, Prisma.ProductUncheckedCreateWithoutModelInput>
+}
+
+export type ProductCreateManyModelInputEnvelope = {
+  data: Prisma.ProductCreateManyModelInput | Prisma.ProductCreateManyModelInput[]
+  skipDuplicates?: boolean
+}
+
+export type ProductUpsertWithWhereUniqueWithoutModelInput = {
+  where: Prisma.ProductWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProductUpdateWithoutModelInput, Prisma.ProductUncheckedUpdateWithoutModelInput>
+  create: Prisma.XOR<Prisma.ProductCreateWithoutModelInput, Prisma.ProductUncheckedCreateWithoutModelInput>
+}
+
+export type ProductUpdateWithWhereUniqueWithoutModelInput = {
+  where: Prisma.ProductWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProductUpdateWithoutModelInput, Prisma.ProductUncheckedUpdateWithoutModelInput>
+}
+
+export type ProductUpdateManyWithWhereWithoutModelInput = {
+  where: Prisma.ProductScalarWhereInput
+  data: Prisma.XOR<Prisma.ProductUpdateManyMutationInput, Prisma.ProductUncheckedUpdateManyWithoutModelInput>
+}
+
+export type ProductScalarWhereInput = {
+  AND?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+  OR?: Prisma.ProductScalarWhereInput[]
+  NOT?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+  id?: Prisma.StringFilter<"Product"> | string
+  externalId?: Prisma.StringFilter<"Product"> | string
+  description?: Prisma.StringFilter<"Product"> | string
+  fabric?: Prisma.StringFilter<"Product"> | string
+  modelId?: Prisma.StringFilter<"Product"> | string
+}
+
+export type ProductCreateWithoutVariantsInput = {
+  id?: string
+  externalId: string
+  description: string
+  fabric: string
+  model: Prisma.ModelCreateNestedOneWithoutProductsInput
 }
 
 export type ProductUncheckedCreateWithoutVariantsInput = {
   id?: string
-  type: $Enums.ProductType
-  modelNumber: string
-  name: string
+  externalId: string
   description: string
   fabric: string
-  sizeType: $Enums.SizeType
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  modelId: string
 }
 
 export type ProductCreateOrConnectWithoutVariantsInput = {
@@ -469,26 +472,48 @@ export type ProductUpdateToOneWithWhereWithoutVariantsInput = {
 
 export type ProductUpdateWithoutVariantsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-  modelNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   fabric?: Prisma.StringFieldUpdateOperationsInput | string
-  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  model?: Prisma.ModelUpdateOneRequiredWithoutProductsNestedInput
 }
 
 export type ProductUncheckedUpdateWithoutVariantsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-  modelNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   fabric?: Prisma.StringFieldUpdateOperationsInput | string
-  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modelId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ProductCreateManyModelInput = {
+  id?: string
+  externalId: string
+  description: string
+  fabric: string
+}
+
+export type ProductUpdateWithoutModelInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fabric?: Prisma.StringFieldUpdateOperationsInput | string
+  variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
+}
+
+export type ProductUncheckedUpdateWithoutModelInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fabric?: Prisma.StringFieldUpdateOperationsInput | string
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+}
+
+export type ProductUncheckedUpdateManyWithoutModelInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fabric?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -524,77 +549,66 @@ export type ProductCountOutputTypeCountVariantsArgs<ExtArgs extends runtime.Type
 
 export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
-  modelNumber?: boolean
-  name?: boolean
+  externalId?: boolean
   description?: boolean
   fabric?: boolean
-  sizeType?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  modelId?: boolean
   variants?: boolean | Prisma.Product$variantsArgs<ExtArgs>
+  model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.ProductCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
 export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
-  modelNumber?: boolean
-  name?: boolean
+  externalId?: boolean
   description?: boolean
   fabric?: boolean
-  sizeType?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  modelId?: boolean
+  model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
 export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
-  modelNumber?: boolean
-  name?: boolean
+  externalId?: boolean
   description?: boolean
   fabric?: boolean
-  sizeType?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  modelId?: boolean
+  model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
 export type ProductSelectScalar = {
   id?: boolean
-  type?: boolean
-  modelNumber?: boolean
-  name?: boolean
+  externalId?: boolean
   description?: boolean
   fabric?: boolean
-  sizeType?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  modelId?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "modelNumber" | "name" | "description" | "fabric" | "sizeType" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "externalId" | "description" | "fabric" | "modelId", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   variants?: boolean | Prisma.Product$variantsArgs<ExtArgs>
+  model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.ProductCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ProductIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
+}
+export type ProductIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
+}
 
 export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Product"
   objects: {
     variants: Prisma.$ProductVariantPayload<ExtArgs>[]
+    model: Prisma.$ModelPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    type: $Enums.ProductType
-    modelNumber: string
-    name: string
+    externalId: string
     description: string
     fabric: string
-    sizeType: $Enums.SizeType
-    createdAt: Date
-    updatedAt: Date
+    modelId: string
   }, ExtArgs["result"]["product"]>
   composites: {}
 }
@@ -990,6 +1004,7 @@ readonly fields: ProductFieldRefs;
 export interface Prisma__ProductClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   variants<T extends Prisma.Product$variantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Product$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  model<T extends Prisma.ModelDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ModelDefaultArgs<ExtArgs>>): Prisma.Prisma__ModelClient<runtime.Types.Result.GetResult<Prisma.$ModelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1020,14 +1035,10 @@ export interface Prisma__ProductClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ProductFieldRefs {
   readonly id: Prisma.FieldRef<"Product", 'String'>
-  readonly type: Prisma.FieldRef<"Product", 'ProductType'>
-  readonly modelNumber: Prisma.FieldRef<"Product", 'String'>
-  readonly name: Prisma.FieldRef<"Product", 'String'>
+  readonly externalId: Prisma.FieldRef<"Product", 'String'>
   readonly description: Prisma.FieldRef<"Product", 'String'>
   readonly fabric: Prisma.FieldRef<"Product", 'String'>
-  readonly sizeType: Prisma.FieldRef<"Product", 'SizeType'>
-  readonly createdAt: Prisma.FieldRef<"Product", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Product", 'DateTime'>
+  readonly modelId: Prisma.FieldRef<"Product", 'String'>
 }
     
 
@@ -1282,6 +1293,10 @@ export type ProductCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.ProductCreateManyInput | Prisma.ProductCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1352,6 +1367,10 @@ export type ProductUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Products to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

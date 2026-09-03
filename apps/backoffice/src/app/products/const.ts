@@ -1,4 +1,4 @@
-import { ProductType, SizeType } from "@amavie/database/browser";
+import { ModelType, SizeType } from "@amavie/database/browser";
 
 export const PRODUCTS_CACHE_TAG = "products";
 
@@ -33,11 +33,11 @@ export const NUMERIC_SIZES = [
   "64",
 ] as const;
 
-export const MODEL_NUMBER_PATTERN = /^\d\.\d{4} [A-Za-z]\d$/;
+export const EXTERNAL_ID_PATTERN = /^\d\.\d{4} [A-Za-z]\d$/;
 export const DIMENSION_PATTERN = /^\d+x\d+$/;
 export const NAME_PATTERN = /^\S+$/;
 
-export const PRODUCT_TYPE_LABELS: Record<ProductType, string> = {
+export const MODEL_TYPE_LABELS: Record<ModelType, string> = {
   Trousers: "Брюки",
   Jeans: "Джинсы",
   Shorts: "Шорты",
@@ -59,5 +59,5 @@ export const SIZE_TYPE_LABELS: Record<SizeType, string> = {
   Dimension: "Прямоугольный (40x60)",
 };
 
-export const PRODUCT_TYPES = Object.values(ProductType);
+export const MODEL_TYPES = Object.values(ModelType);
 export const SIZE_TYPES = Object.values(SizeType);

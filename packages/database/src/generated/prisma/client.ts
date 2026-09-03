@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type BlogPost = Prisma.BlogPostModel
 /**
+ * Model Model
+ * 
+ */
+export type Model = Prisma.ModelModel
+/**
  * Model Product
  * 
  */

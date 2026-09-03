@@ -17,7 +17,7 @@ export const Templates = {
 export type Templates = (typeof Templates)[keyof typeof Templates]
 
 
-export const ProductType = {
+export const ModelType = {
   Trousers: 'Trousers',
   Jeans: 'Jeans',
   Shorts: 'Shorts',
@@ -33,7 +33,7 @@ export const ProductType = {
   Accessory: 'Accessory'
 } as const
 
-export type ProductType = (typeof ProductType)[keyof typeof ProductType]
+export type ModelType = (typeof ModelType)[keyof typeof ModelType]
 
 
 export const SizeType = {

@@ -21,7 +21,7 @@ enum Templates {
   Template2
 }
 
-enum ProductType {
+enum ModelType {
   Trousers
   Jeans
   Shorts
@@ -43,29 +43,35 @@ enum SizeType {
   Dimension
 }
 
-model Product {
-  id          String           @id @default(uuid())
-  type        ProductType
-  modelNumber String           @unique
-  name        String
-  description String
-  fabric      String
-  sizeType    SizeType
-  variants    ProductVariant[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+model Model {
+  id        String    @id @default(uuid())
+  type      ModelType
+  name      String    @unique
+  sizeType  SizeType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 
   @@index([type])
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  externalId  String           @unique
+  description String
+  fabric      String
+  variants    ProductVariant[]
+  model       Model            @relation(fields: [modelId], references: [id])
+  modelId     String
 }
 
 model ProductVariant {
   id        String  @id @default(uuid())
   productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
   size      String
   color     String
   stock     Int     @default(0)
 
   @@unique([productId, size, color])
-  @@index([productId])
 }

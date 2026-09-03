@@ -3,7 +3,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
-import { PRODUCT_TYPE_LABELS, PRODUCTS_CACHE_TAG } from "./const";
+import { MODEL_TYPE_LABELS, PRODUCTS_CACHE_TAG } from "./const";
 
 export default function ProductsPage() {
   return (
@@ -33,30 +33,29 @@ async function ProductList() {
   cacheLife("hours");
   cacheTag(PRODUCTS_CACHE_TAG);
 
-  const products = await prisma.product.findMany({
+  const models = await prisma.model.findMany({
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
       name: true,
-      modelNumber: true,
       type: true,
     },
   });
 
-  if (products.length === 0) {
+  if (models.length === 0) {
     return <p className="text-muted-foreground">Пока нет товаров.</p>;
   }
 
   return (
     <ul className="divide-y divide-border rounded-2xl border border-border">
-      {products.map((product) => (
+      {models.map((model) => (
         <li
-          key={product.id}
+          key={model.id}
           className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3"
         >
-          <span className="font-medium">{product.name}</span>
+          <span className="font-medium">{model.name}</span>
           <span className="text-sm text-muted-foreground">
-            {product.modelNumber} · {PRODUCT_TYPE_LABELS[product.type]}
+            {MODEL_TYPE_LABELS[model.type]}
           </span>
         </li>
       ))}
