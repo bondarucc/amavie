@@ -49,14 +49,16 @@ async function ProductList() {
   return (
     <ul className="divide-y divide-border rounded-2xl border border-border">
       {models.map((model) => (
-        <li
-          key={model.id}
-          className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3"
-        >
-          <span className="font-medium">{model.name}</span>
-          <span className="text-sm text-muted-foreground">
-            {MODEL_TYPE_LABELS[model.type]}
-          </span>
+        <li key={model.id}>
+          <Link
+            href={`/products/${model.id}`}
+            className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3 hover:bg-muted/50"
+          >
+            <span className="font-medium">{model.name}</span>
+            <span className="text-sm text-muted-foreground">
+              {MODEL_TYPE_LABELS[model.type]}
+            </span>
+          </Link>
         </li>
       ))}
     </ul>
