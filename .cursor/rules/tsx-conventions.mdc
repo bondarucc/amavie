@@ -1,0 +1,34 @@
+---
+description: TSX conventions, especially when to use or extend React context
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# TSX conventions
+
+Prefer functional components. Pass props for shallow trees (one or two levels). Introduce React context only when it removes real props drilling — several nested consumers sharing the same state or actions.
+
+Do not create a new context for every subtree. Before adding one, check whether an existing context already serves the same purpose and can be extended. If a context grows into unrelated concerns, split it rather than stuffing more into the value.
+
+Colocate the provider, typed value, and a hook that throws when used outside the provider. Prefer focused consumer hooks over exposing the entire value everywhere.
+
+```tsx
+// ❌ BAD — new context for a one-level prop, or a second context for the same form
+function ProductFields({ model, updateModel }: { model: ModelDraft; updateModel: ... }) { ... }
+
+// ❌ BAD — kitchen-sink context mixing unrelated features
+type AppContextValue = { productForm: ...; warehouseStock: ...; theme: ... };
+
+// ✅ GOOD — one feature context; nested fields read it instead of threading props
+function ModelFields() {
+  const { model, updateModel, fieldErrors } = useCreateProductForm();
+  // ...
+}
+
+function useProductDraft(productId: string) {
+  const { products, updateProduct } = useCreateProductForm();
+  // scoped slice; same context, not a new one
+}
+```
+
+Reference: `CreateProductFormProvider` / `useCreateProductForm` in product create. `WarehouseStockView` passing a few props to nearby children is fine — no context needed.
