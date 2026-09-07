@@ -55,6 +55,8 @@ export const ModelName = {
   Model: 'Model',
   Product: 'Product',
   ProductVariant: 'ProductVariant',
+  Warehouse: 'Warehouse',
+  WarehouseStock: 'WarehouseStock',
   ProductImage: 'ProductImage'
 } as const
 
@@ -113,11 +115,28 @@ export const ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
   size: 'size',
-  color: 'color',
-  stock: 'stock'
+  color: 'color'
 } as const
 
 export type ProductVariantScalarFieldEnum = (typeof ProductVariantScalarFieldEnum)[keyof typeof ProductVariantScalarFieldEnum]
+
+
+export const WarehouseScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+} as const
+
+export type WarehouseScalarFieldEnum = (typeof WarehouseScalarFieldEnum)[keyof typeof WarehouseScalarFieldEnum]
+
+
+export const WarehouseStockScalarFieldEnum = {
+  id: 'id',
+  stock: 'stock',
+  productVariantId: 'productVariantId',
+  warehouseId: 'warehouseId'
+} as const
+
+export type WarehouseStockScalarFieldEnum = (typeof WarehouseStockScalarFieldEnum)[keyof typeof WarehouseStockScalarFieldEnum]
 
 
 export const ProductImageScalarFieldEnum = {

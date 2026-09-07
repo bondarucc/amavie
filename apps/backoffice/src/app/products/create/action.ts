@@ -4,6 +4,7 @@ import { Prisma } from "@amavie/database";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import { WAREHOUSE_STOCK_CACHE_TAG } from "../../warehouse-stock/const";
 import { PRODUCTS_CACHE_TAG } from "../const";
 import {
   fieldErrorsFromZod,
@@ -99,14 +100,30 @@ export async function createProduct(
               fabric: product.fabric,
               variants: {
                 create: product.sizes.flatMap((size) =>
-                  product.colors.map((color) => ({ size, color, stock: 0 })),
+                  product.colors.map((color) => ({ size, color })),
                 ),
               },
             })),
           },
         },
-        include: { products: true },
+        include: { products: { include: { variants: true } } },
       });
+
+      const warehouses = await tx.warehouse.findMany({ select: { id: true } });
+      const variantIds = model.products.flatMap((product) =>
+        product.variants.map((variant) => variant.id),
+      );
+
+      if (warehouses.length > 0 && variantIds.length > 0) {
+        await tx.warehouseStock.createMany({
+          data: variantIds.flatMap((productVariantId) =>
+            warehouses.map((warehouse) => ({
+              productVariantId,
+              warehouseId: warehouse.id,
+            })),
+          ),
+        });
+      }
 
       const images = model.products.flatMap((createdProduct) => {
         const draft = products.find(
@@ -139,5 +156,6 @@ export async function createProduct(
   }
 
   revalidateTag(PRODUCTS_CACHE_TAG, { expire: 0 });
+  revalidateTag(WAREHOUSE_STOCK_CACHE_TAG, { expire: 0 });
   redirect(`/products/${modelId}`);
 }

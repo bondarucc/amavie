@@ -38,6 +38,16 @@ export type Product = Prisma.ProductModel
  */
 export type ProductVariant = Prisma.ProductVariantModel
 /**
+ * Model Warehouse
+ * 
+ */
+export type Warehouse = Prisma.WarehouseModel
+/**
+ * Model WarehouseStock
+ * 
+ */
+export type WarehouseStock = Prisma.WarehouseStockModel
+/**
  * Model ProductImage
  * 
  */

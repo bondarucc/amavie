@@ -36,7 +36,12 @@ export default function Sidebar({ children }: PropsWithChildren) {
                 <SidebarMenuButton>Заказы</SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>Остатки по складам</SidebarMenuButton>
+                <SidebarMenuButton
+                  isActive={pathname.startsWith("/warehouse-stock")}
+                  render={
+                    <Link href="/warehouse-stock">Остатки по складам</Link>
+                  }
+                />
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton>СМС рассылка</SidebarMenuButton>
