@@ -403,6 +403,8 @@ export const ModelName = {
   ProductVariant: 'ProductVariant',
   Warehouse: 'Warehouse',
   WarehouseStock: 'WarehouseStock',
+  WarehouseStockImport: 'WarehouseStockImport',
+  WarehouseStockImportSnapshot: 'WarehouseStockImportSnapshot',
   ProductImage: 'ProductImage'
 } as const
 
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "blogPost" | "model" | "product" | "productVariant" | "warehouse" | "warehouseStock" | "productImage"
+    modelProps: "blogPost" | "model" | "product" | "productVariant" | "warehouse" | "warehouseStock" | "warehouseStockImport" | "warehouseStockImportSnapshot" | "productImage"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -867,6 +869,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WarehouseStockImport: {
+      payload: Prisma.$WarehouseStockImportPayload<ExtArgs>
+      fields: Prisma.WarehouseStockImportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WarehouseStockImportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WarehouseStockImportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>
+        }
+        findFirst: {
+          args: Prisma.WarehouseStockImportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WarehouseStockImportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>
+        }
+        findMany: {
+          args: Prisma.WarehouseStockImportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>[]
+        }
+        create: {
+          args: Prisma.WarehouseStockImportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>
+        }
+        createMany: {
+          args: Prisma.WarehouseStockImportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WarehouseStockImportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>[]
+        }
+        delete: {
+          args: Prisma.WarehouseStockImportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>
+        }
+        update: {
+          args: Prisma.WarehouseStockImportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>
+        }
+        deleteMany: {
+          args: Prisma.WarehouseStockImportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WarehouseStockImportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WarehouseStockImportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>[]
+        }
+        upsert: {
+          args: Prisma.WarehouseStockImportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportPayload>
+        }
+        aggregate: {
+          args: Prisma.WarehouseStockImportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWarehouseStockImport>
+        }
+        groupBy: {
+          args: Prisma.WarehouseStockImportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WarehouseStockImportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WarehouseStockImportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WarehouseStockImportCountAggregateOutputType> | number
+        }
+      }
+    }
+    WarehouseStockImportSnapshot: {
+      payload: Prisma.$WarehouseStockImportSnapshotPayload<ExtArgs>
+      fields: Prisma.WarehouseStockImportSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WarehouseStockImportSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WarehouseStockImportSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.WarehouseStockImportSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WarehouseStockImportSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.WarehouseStockImportSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.WarehouseStockImportSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.WarehouseStockImportSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WarehouseStockImportSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.WarehouseStockImportSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>
+        }
+        update: {
+          args: Prisma.WarehouseStockImportSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.WarehouseStockImportSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WarehouseStockImportSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WarehouseStockImportSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.WarehouseStockImportSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WarehouseStockImportSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.WarehouseStockImportSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWarehouseStockImportSnapshot>
+        }
+        groupBy: {
+          args: Prisma.WarehouseStockImportSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WarehouseStockImportSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WarehouseStockImportSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WarehouseStockImportSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
     ProductImage: {
       payload: Prisma.$ProductImagePayload<ExtArgs>
       fields: Prisma.ProductImageFieldRefs
@@ -1043,6 +1193,35 @@ export const WarehouseStockScalarFieldEnum = {
 export type WarehouseStockScalarFieldEnum = (typeof WarehouseStockScalarFieldEnum)[keyof typeof WarehouseStockScalarFieldEnum]
 
 
+export const WarehouseStockImportScalarFieldEnum = {
+  id: 'id',
+  warehouseId: 'warehouseId',
+  filename: 'filename',
+  state: 'state',
+  appliedAt: 'appliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WarehouseStockImportScalarFieldEnum = (typeof WarehouseStockImportScalarFieldEnum)[keyof typeof WarehouseStockImportScalarFieldEnum]
+
+
+export const WarehouseStockImportSnapshotScalarFieldEnum = {
+  id: 'id',
+  importId: 'importId',
+  warehouseStockId: 'warehouseStockId',
+  previousStock: 'previousStock',
+  newStock: 'newStock',
+  externalId: 'externalId',
+  size: 'size',
+  color: 'color',
+  modelName: 'modelName',
+  state: 'state'
+} as const
+
+export type WarehouseStockImportSnapshotScalarFieldEnum = (typeof WarehouseStockImportSnapshotScalarFieldEnum)[keyof typeof WarehouseStockImportSnapshotScalarFieldEnum]
+
+
 export const ProductImageScalarFieldEnum = {
   id: 'id',
   filename: 'filename',
@@ -1084,6 +1263,14 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1187,6 +1374,34 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WarehouseStockImportState'
+ */
+export type EnumWarehouseStockImportStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStockImportState'>
+    
+
+
+/**
+ * Reference to a field of type 'WarehouseStockImportState[]'
+ */
+export type ListEnumWarehouseStockImportStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStockImportState[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WarehouseStockImportSnapshotState'
+ */
+export type EnumWarehouseStockImportSnapshotStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStockImportSnapshotState'>
+    
+
+
+/**
+ * Reference to a field of type 'WarehouseStockImportSnapshotState[]'
+ */
+export type ListEnumWarehouseStockImportSnapshotStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStockImportSnapshotState[]'>
     
 
 
@@ -1360,6 +1575,8 @@ export type GlobalOmitConfig = {
   productVariant?: Prisma.ProductVariantOmit
   warehouse?: Prisma.WarehouseOmit
   warehouseStock?: Prisma.WarehouseStockOmit
+  warehouseStockImport?: Prisma.WarehouseStockImportOmit
+  warehouseStockImportSnapshot?: Prisma.WarehouseStockImportSnapshotOmit
   productImage?: Prisma.ProductImageOmit
 }
 

@@ -7,6 +7,7 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { cachedProductColorImages } from "./data";
 import { WAREHOUSES_CACHE_TAG, WAREHOUSE_STOCK_CACHE_TAG } from "./const";
+import { syncDraftSnapshotsAfterStockUpdate } from "./import/syncDraftSnapshots";
 
 export type CreateWarehouseState = {
   fieldError?: string;
@@ -99,9 +100,11 @@ export async function updateVariantStocks(input: {
   }
 
   try {
-    await prisma.$transaction(
-      parsed.data.stocks.map((entry) =>
-        prisma.warehouseStock.update({
+    await prisma.$transaction(async (tx) => {
+      const updated: { warehouseStockId: string; stock: number }[] = [];
+
+      for (const entry of parsed.data.stocks) {
+        const row = await tx.warehouseStock.update({
           where: {
             productVariantId_warehouseId: {
               productVariantId: parsed.data.productVariantId,
@@ -109,9 +112,13 @@ export async function updateVariantStocks(input: {
             },
           },
           data: { stock: entry.stock },
-        }),
-      ),
-    );
+          select: { id: true, stock: true },
+        });
+        updated.push({ warehouseStockId: row.id, stock: row.stock });
+      }
+
+      await syncDraftSnapshotsAfterStockUpdate(tx, updated);
+    });
   } catch {
     return { ok: false, error: "Не удалось обновить остаток" };
   }

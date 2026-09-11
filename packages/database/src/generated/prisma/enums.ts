@@ -43,3 +43,21 @@ export const SizeType = {
 } as const
 
 export type SizeType = (typeof SizeType)[keyof typeof SizeType]
+
+
+export const WarehouseStockImportState = {
+  draft: 'draft',
+  applied: 'applied'
+} as const
+
+export type WarehouseStockImportState = (typeof WarehouseStockImportState)[keyof typeof WarehouseStockImportState]
+
+
+export const WarehouseStockImportSnapshotState = {
+  NOT_MATCHED: 'NOT_MATCHED',
+  UNTOUCHED: 'UNTOUCHED',
+  MISSING_INPUT: 'MISSING_INPUT',
+  MODIFIED: 'MODIFIED'
+} as const
+
+export type WarehouseStockImportSnapshotState = (typeof WarehouseStockImportSnapshotState)[keyof typeof WarehouseStockImportSnapshotState]

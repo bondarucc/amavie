@@ -5,6 +5,7 @@ import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { WAREHOUSE_STOCK_CACHE_TAG } from "../../warehouse-stock/const";
+import { syncDraftSnapshotsForNewStocks } from "../../warehouse-stock/import/syncDraftSnapshots";
 import { PRODUCTS_CACHE_TAG } from "../const";
 import {
   fieldErrorsFromZod,
@@ -123,6 +124,43 @@ export async function createProduct(
             })),
           ),
         });
+
+        const createdStocks = await tx.warehouseStock.findMany({
+          where: {
+            productVariantId: { in: variantIds },
+            warehouseId: { in: warehouses.map((warehouse) => warehouse.id) },
+          },
+          select: {
+            id: true,
+            warehouseId: true,
+            stock: true,
+            productVariant: {
+              select: {
+                size: true,
+                color: true,
+                product: {
+                  select: {
+                    externalId: true,
+                    model: { select: { name: true } },
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        await syncDraftSnapshotsForNewStocks(
+          tx,
+          createdStocks.map((entry) => ({
+            id: entry.id,
+            warehouseId: entry.warehouseId,
+            stock: entry.stock,
+            externalId: entry.productVariant.product.externalId,
+            size: entry.productVariant.size,
+            color: entry.productVariant.color,
+            modelName: entry.productVariant.product.model.name,
+          })),
+        );
       }
 
       const images = model.products.flatMap((createdProduct) => {

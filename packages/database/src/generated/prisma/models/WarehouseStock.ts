@@ -210,6 +210,7 @@ export type WarehouseStockWhereInput = {
   warehouseId?: Prisma.StringFilter<"WarehouseStock"> | string
   productVariant?: Prisma.XOR<Prisma.ProductVariantScalarRelationFilter, Prisma.ProductVariantWhereInput>
   warehouse?: Prisma.XOR<Prisma.WarehouseScalarRelationFilter, Prisma.WarehouseWhereInput>
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotListRelationFilter
 }
 
 export type WarehouseStockOrderByWithRelationInput = {
@@ -219,6 +220,7 @@ export type WarehouseStockOrderByWithRelationInput = {
   warehouseId?: Prisma.SortOrder
   productVariant?: Prisma.ProductVariantOrderByWithRelationInput
   warehouse?: Prisma.WarehouseOrderByWithRelationInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotOrderByRelationAggregateInput
 }
 
 export type WarehouseStockWhereUniqueInput = Prisma.AtLeast<{
@@ -232,6 +234,7 @@ export type WarehouseStockWhereUniqueInput = Prisma.AtLeast<{
   warehouseId?: Prisma.StringFilter<"WarehouseStock"> | string
   productVariant?: Prisma.XOR<Prisma.ProductVariantScalarRelationFilter, Prisma.ProductVariantWhereInput>
   warehouse?: Prisma.XOR<Prisma.WarehouseScalarRelationFilter, Prisma.WarehouseWhereInput>
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotListRelationFilter
 }, "id" | "productVariantId_warehouseId">
 
 export type WarehouseStockOrderByWithAggregationInput = {
@@ -261,6 +264,7 @@ export type WarehouseStockCreateInput = {
   stock?: number
   productVariant: Prisma.ProductVariantCreateNestedOneWithoutStocksInput
   warehouse: Prisma.WarehouseCreateNestedOneWithoutStocksInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotCreateNestedManyWithoutWarehouseStockInput
 }
 
 export type WarehouseStockUncheckedCreateInput = {
@@ -268,6 +272,7 @@ export type WarehouseStockUncheckedCreateInput = {
   stock?: number
   productVariantId: string
   warehouseId: string
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUncheckedCreateNestedManyWithoutWarehouseStockInput
 }
 
 export type WarehouseStockUpdateInput = {
@@ -275,6 +280,7 @@ export type WarehouseStockUpdateInput = {
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   productVariant?: Prisma.ProductVariantUpdateOneRequiredWithoutStocksNestedInput
   warehouse?: Prisma.WarehouseUpdateOneRequiredWithoutStocksNestedInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUpdateManyWithoutWarehouseStockNestedInput
 }
 
 export type WarehouseStockUncheckedUpdateInput = {
@@ -282,6 +288,7 @@ export type WarehouseStockUncheckedUpdateInput = {
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   productVariantId?: Prisma.StringFieldUpdateOperationsInput | string
   warehouseId?: Prisma.StringFieldUpdateOperationsInput | string
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUncheckedUpdateManyWithoutWarehouseStockNestedInput
 }
 
 export type WarehouseStockCreateManyInput = {
@@ -345,6 +352,11 @@ export type WarehouseStockMinOrderByAggregateInput = {
 
 export type WarehouseStockSumOrderByAggregateInput = {
   stock?: Prisma.SortOrder
+}
+
+export type WarehouseStockNullableScalarRelationFilter = {
+  is?: Prisma.WarehouseStockWhereInput | null
+  isNot?: Prisma.WarehouseStockWhereInput | null
 }
 
 export type WarehouseStockCreateNestedManyWithoutProductVariantInput = {
@@ -439,16 +451,34 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type WarehouseStockCreateNestedOneWithoutImportSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.WarehouseStockCreateWithoutImportSnapshotsInput, Prisma.WarehouseStockUncheckedCreateWithoutImportSnapshotsInput>
+  connectOrCreate?: Prisma.WarehouseStockCreateOrConnectWithoutImportSnapshotsInput
+  connect?: Prisma.WarehouseStockWhereUniqueInput
+}
+
+export type WarehouseStockUpdateOneWithoutImportSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.WarehouseStockCreateWithoutImportSnapshotsInput, Prisma.WarehouseStockUncheckedCreateWithoutImportSnapshotsInput>
+  connectOrCreate?: Prisma.WarehouseStockCreateOrConnectWithoutImportSnapshotsInput
+  upsert?: Prisma.WarehouseStockUpsertWithoutImportSnapshotsInput
+  disconnect?: Prisma.WarehouseStockWhereInput | boolean
+  delete?: Prisma.WarehouseStockWhereInput | boolean
+  connect?: Prisma.WarehouseStockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WarehouseStockUpdateToOneWithWhereWithoutImportSnapshotsInput, Prisma.WarehouseStockUpdateWithoutImportSnapshotsInput>, Prisma.WarehouseStockUncheckedUpdateWithoutImportSnapshotsInput>
+}
+
 export type WarehouseStockCreateWithoutProductVariantInput = {
   id?: string
   stock?: number
   warehouse: Prisma.WarehouseCreateNestedOneWithoutStocksInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotCreateNestedManyWithoutWarehouseStockInput
 }
 
 export type WarehouseStockUncheckedCreateWithoutProductVariantInput = {
   id?: string
   stock?: number
   warehouseId: string
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUncheckedCreateNestedManyWithoutWarehouseStockInput
 }
 
 export type WarehouseStockCreateOrConnectWithoutProductVariantInput = {
@@ -491,12 +521,14 @@ export type WarehouseStockCreateWithoutWarehouseInput = {
   id?: string
   stock?: number
   productVariant: Prisma.ProductVariantCreateNestedOneWithoutStocksInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotCreateNestedManyWithoutWarehouseStockInput
 }
 
 export type WarehouseStockUncheckedCreateWithoutWarehouseInput = {
   id?: string
   stock?: number
   productVariantId: string
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUncheckedCreateNestedManyWithoutWarehouseStockInput
 }
 
 export type WarehouseStockCreateOrConnectWithoutWarehouseInput = {
@@ -525,6 +557,50 @@ export type WarehouseStockUpdateManyWithWhereWithoutWarehouseInput = {
   data: Prisma.XOR<Prisma.WarehouseStockUpdateManyMutationInput, Prisma.WarehouseStockUncheckedUpdateManyWithoutWarehouseInput>
 }
 
+export type WarehouseStockCreateWithoutImportSnapshotsInput = {
+  id?: string
+  stock?: number
+  productVariant: Prisma.ProductVariantCreateNestedOneWithoutStocksInput
+  warehouse: Prisma.WarehouseCreateNestedOneWithoutStocksInput
+}
+
+export type WarehouseStockUncheckedCreateWithoutImportSnapshotsInput = {
+  id?: string
+  stock?: number
+  productVariantId: string
+  warehouseId: string
+}
+
+export type WarehouseStockCreateOrConnectWithoutImportSnapshotsInput = {
+  where: Prisma.WarehouseStockWhereUniqueInput
+  create: Prisma.XOR<Prisma.WarehouseStockCreateWithoutImportSnapshotsInput, Prisma.WarehouseStockUncheckedCreateWithoutImportSnapshotsInput>
+}
+
+export type WarehouseStockUpsertWithoutImportSnapshotsInput = {
+  update: Prisma.XOR<Prisma.WarehouseStockUpdateWithoutImportSnapshotsInput, Prisma.WarehouseStockUncheckedUpdateWithoutImportSnapshotsInput>
+  create: Prisma.XOR<Prisma.WarehouseStockCreateWithoutImportSnapshotsInput, Prisma.WarehouseStockUncheckedCreateWithoutImportSnapshotsInput>
+  where?: Prisma.WarehouseStockWhereInput
+}
+
+export type WarehouseStockUpdateToOneWithWhereWithoutImportSnapshotsInput = {
+  where?: Prisma.WarehouseStockWhereInput
+  data: Prisma.XOR<Prisma.WarehouseStockUpdateWithoutImportSnapshotsInput, Prisma.WarehouseStockUncheckedUpdateWithoutImportSnapshotsInput>
+}
+
+export type WarehouseStockUpdateWithoutImportSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stock?: Prisma.IntFieldUpdateOperationsInput | number
+  productVariant?: Prisma.ProductVariantUpdateOneRequiredWithoutStocksNestedInput
+  warehouse?: Prisma.WarehouseUpdateOneRequiredWithoutStocksNestedInput
+}
+
+export type WarehouseStockUncheckedUpdateWithoutImportSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stock?: Prisma.IntFieldUpdateOperationsInput | number
+  productVariantId?: Prisma.StringFieldUpdateOperationsInput | string
+  warehouseId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type WarehouseStockCreateManyProductVariantInput = {
   id?: string
   stock?: number
@@ -535,12 +611,14 @@ export type WarehouseStockUpdateWithoutProductVariantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   warehouse?: Prisma.WarehouseUpdateOneRequiredWithoutStocksNestedInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUpdateManyWithoutWarehouseStockNestedInput
 }
 
 export type WarehouseStockUncheckedUpdateWithoutProductVariantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   warehouseId?: Prisma.StringFieldUpdateOperationsInput | string
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUncheckedUpdateManyWithoutWarehouseStockNestedInput
 }
 
 export type WarehouseStockUncheckedUpdateManyWithoutProductVariantInput = {
@@ -559,12 +637,14 @@ export type WarehouseStockUpdateWithoutWarehouseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   productVariant?: Prisma.ProductVariantUpdateOneRequiredWithoutStocksNestedInput
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUpdateManyWithoutWarehouseStockNestedInput
 }
 
 export type WarehouseStockUncheckedUpdateWithoutWarehouseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stock?: Prisma.IntFieldUpdateOperationsInput | number
   productVariantId?: Prisma.StringFieldUpdateOperationsInput | string
+  importSnapshots?: Prisma.WarehouseStockImportSnapshotUncheckedUpdateManyWithoutWarehouseStockNestedInput
 }
 
 export type WarehouseStockUncheckedUpdateManyWithoutWarehouseInput = {
@@ -574,6 +654,35 @@ export type WarehouseStockUncheckedUpdateManyWithoutWarehouseInput = {
 }
 
 
+/**
+ * Count Type WarehouseStockCountOutputType
+ */
+
+export type WarehouseStockCountOutputType = {
+  importSnapshots: number
+}
+
+export type WarehouseStockCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  importSnapshots?: boolean | WarehouseStockCountOutputTypeCountImportSnapshotsArgs
+}
+
+/**
+ * WarehouseStockCountOutputType without action
+ */
+export type WarehouseStockCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WarehouseStockCountOutputType
+   */
+  select?: Prisma.WarehouseStockCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * WarehouseStockCountOutputType without action
+ */
+export type WarehouseStockCountOutputTypeCountImportSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WarehouseStockImportSnapshotWhereInput
+}
+
 
 export type WarehouseStockSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -582,6 +691,8 @@ export type WarehouseStockSelect<ExtArgs extends runtime.Types.Extensions.Intern
   warehouseId?: boolean
   productVariant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   warehouse?: boolean | Prisma.WarehouseDefaultArgs<ExtArgs>
+  importSnapshots?: boolean | Prisma.WarehouseStock$importSnapshotsArgs<ExtArgs>
+  _count?: boolean | Prisma.WarehouseStockCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["warehouseStock"]>
 
 export type WarehouseStockSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -613,6 +724,8 @@ export type WarehouseStockOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type WarehouseStockInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   productVariant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
   warehouse?: boolean | Prisma.WarehouseDefaultArgs<ExtArgs>
+  importSnapshots?: boolean | Prisma.WarehouseStock$importSnapshotsArgs<ExtArgs>
+  _count?: boolean | Prisma.WarehouseStockCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WarehouseStockIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   productVariant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
@@ -628,6 +741,7 @@ export type $WarehouseStockPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     productVariant: Prisma.$ProductVariantPayload<ExtArgs>
     warehouse: Prisma.$WarehousePayload<ExtArgs>
+    importSnapshots: Prisma.$WarehouseStockImportSnapshotPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1030,6 +1144,7 @@ export interface Prisma__WarehouseStockClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   productVariant<T extends Prisma.ProductVariantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductVariantDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductVariantClient<runtime.Types.Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   warehouse<T extends Prisma.WarehouseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WarehouseDefaultArgs<ExtArgs>>): Prisma.Prisma__WarehouseClient<runtime.Types.Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  importSnapshots<T extends Prisma.WarehouseStock$importSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WarehouseStock$importSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WarehouseStockImportSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1461,6 +1576,30 @@ export type WarehouseStockDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many WarehouseStocks to delete.
    */
   limit?: number
+}
+
+/**
+ * WarehouseStock.importSnapshots
+ */
+export type WarehouseStock$importSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WarehouseStockImportSnapshot
+   */
+  select?: Prisma.WarehouseStockImportSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WarehouseStockImportSnapshot
+   */
+  omit?: Prisma.WarehouseStockImportSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WarehouseStockImportSnapshotInclude<ExtArgs> | null
+  where?: Prisma.WarehouseStockImportSnapshotWhereInput
+  orderBy?: Prisma.WarehouseStockImportSnapshotOrderByWithRelationInput | Prisma.WarehouseStockImportSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.WarehouseStockImportSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WarehouseStockImportSnapshotScalarFieldEnum | Prisma.WarehouseStockImportSnapshotScalarFieldEnum[]
 }
 
 /**

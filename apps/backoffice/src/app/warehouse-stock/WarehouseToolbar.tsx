@@ -10,7 +10,15 @@ import {
 } from "@/components/ui/select";
 import { CreateWarehouseDialog } from "./CreateWarehouseDialog";
 import { ALL_WAREHOUSES } from "./const";
-import { stockHref, type StockQuery, type WarehouseOption } from "./query";
+import {
+  importPageHref,
+  stockHref,
+  type StockQuery,
+  type WarehouseOption,
+} from "./query";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function WarehouseToolbar({
   warehouses,
@@ -58,7 +66,15 @@ export function WarehouseToolbar({
           </SelectContent>
         </Select>
       </div>
-      <CreateWarehouseDialog query={query} />
+      <div className="flex flex-wrap items-center gap-2">
+        <Link
+          href={importPageHref(selected)}
+          className={cn(buttonVariants({ variant: "outline" }))}
+        >
+          Импорт
+        </Link>
+        <CreateWarehouseDialog query={query} />
+      </div>
     </div>
   );
 }

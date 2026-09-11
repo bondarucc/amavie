@@ -110,3 +110,10 @@ export function stockHref(
   const qs = toSearchParams(next).toString();
   return qs ? `/warehouse-stock?${qs}` : "/warehouse-stock";
 }
+
+export function importPageHref(warehouse: string): string {
+  if (warehouse !== ALL_WAREHOUSES) {
+    return `/warehouse-stock/import?warehouse=${encodeURIComponent(warehouse)}`;
+  }
+  return "/warehouse-stock/import";
+}

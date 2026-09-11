@@ -77,22 +77,68 @@ model ProductVariant {
   @@unique([productId, size, color])
 }
 
+enum WarehouseStockImportState {
+  draft
+  applied
+}
+
+enum WarehouseStockImportSnapshotState {
+  NOT_MATCHED
+  UNTOUCHED
+  MISSING_INPUT
+  MODIFIED
+}
+
 model Warehouse {
-  id     String           @id @default(uuid())
-  name   String           @unique
-  stocks WarehouseStock[]
+  id      String                  @id @default(uuid())
+  name    String                  @unique
+  stocks  WarehouseStock[]
+  imports WarehouseStockImport[]
 }
 
 model WarehouseStock {
-  id               String         @id @default(uuid())
-  stock            Int            @default(0)
+  id               String                         @id @default(uuid())
+  stock            Int                            @default(0)
   productVariantId String
-  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  productVariant   ProductVariant                 @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
   warehouseId      String
-  warehouse        Warehouse      @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  warehouse        Warehouse                      @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  importSnapshots  WarehouseStockImportSnapshot[]
 
   @@unique([productVariantId, warehouseId])
   @@index([warehouseId])
+}
+
+model WarehouseStockImport {
+  id          String                         @id @default(uuid())
+  warehouseId String
+  warehouse   Warehouse                      @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  filename    String
+  state       WarehouseStockImportState      @default(draft)
+  appliedAt   DateTime?
+  createdAt   DateTime                       @default(now())
+  updatedAt   DateTime                       @updatedAt
+  snapshots   WarehouseStockImportSnapshot[]
+
+  @@index([warehouseId])
+}
+
+model WarehouseStockImportSnapshot {
+  id               String                              @id @default(uuid())
+  importId         String
+  import           WarehouseStockImport                @relation(fields: [importId], references: [id], onDelete: Cascade)
+  warehouseStockId String?
+  warehouseStock   WarehouseStock?                     @relation(fields: [warehouseStockId], references: [id])
+  previousStock    Int?
+  newStock         Int?
+  externalId       String
+  size             String
+  color            String
+  modelName        String?
+  state            WarehouseStockImportSnapshotState
+
+  @@index([importId])
+  @@index([warehouseStockId])
 }
 
 model ProductImage {

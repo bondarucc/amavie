@@ -57,6 +57,8 @@ export const ModelName = {
   ProductVariant: 'ProductVariant',
   Warehouse: 'Warehouse',
   WarehouseStock: 'WarehouseStock',
+  WarehouseStockImport: 'WarehouseStockImport',
+  WarehouseStockImportSnapshot: 'WarehouseStockImportSnapshot',
   ProductImage: 'ProductImage'
 } as const
 
@@ -139,6 +141,35 @@ export const WarehouseStockScalarFieldEnum = {
 export type WarehouseStockScalarFieldEnum = (typeof WarehouseStockScalarFieldEnum)[keyof typeof WarehouseStockScalarFieldEnum]
 
 
+export const WarehouseStockImportScalarFieldEnum = {
+  id: 'id',
+  warehouseId: 'warehouseId',
+  filename: 'filename',
+  state: 'state',
+  appliedAt: 'appliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WarehouseStockImportScalarFieldEnum = (typeof WarehouseStockImportScalarFieldEnum)[keyof typeof WarehouseStockImportScalarFieldEnum]
+
+
+export const WarehouseStockImportSnapshotScalarFieldEnum = {
+  id: 'id',
+  importId: 'importId',
+  warehouseStockId: 'warehouseStockId',
+  previousStock: 'previousStock',
+  newStock: 'newStock',
+  externalId: 'externalId',
+  size: 'size',
+  color: 'color',
+  modelName: 'modelName',
+  state: 'state'
+} as const
+
+export type WarehouseStockImportSnapshotScalarFieldEnum = (typeof WarehouseStockImportSnapshotScalarFieldEnum)[keyof typeof WarehouseStockImportSnapshotScalarFieldEnum]
+
+
 export const ProductImageScalarFieldEnum = {
   id: 'id',
   filename: 'filename',
@@ -180,4 +211,12 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

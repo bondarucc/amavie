@@ -48,6 +48,16 @@ export type Warehouse = Prisma.WarehouseModel
  */
 export type WarehouseStock = Prisma.WarehouseStockModel
 /**
+ * Model WarehouseStockImport
+ * 
+ */
+export type WarehouseStockImport = Prisma.WarehouseStockImportModel
+/**
+ * Model WarehouseStockImportSnapshot
+ * 
+ */
+export type WarehouseStockImportSnapshot = Prisma.WarehouseStockImportSnapshotModel
+/**
  * Model ProductImage
  * 
  */
