@@ -4,6 +4,8 @@ import { Prisma } from "@amavie/database";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import { COLORS_CACHE_TAG } from "../../colors/const";
+import { normalizeDisplayValue } from "../../colors/color";
 import { WAREHOUSE_STOCK_CACHE_TAG } from "../../warehouse-stock/const";
 import { syncDraftSnapshotsForNewStocks } from "../../warehouse-stock/import/syncDraftSnapshots";
 import { PRODUCTS_CACHE_TAG } from "../const";
@@ -70,6 +72,10 @@ async function conflictFieldErrors(
     return { fieldErrors: { products: productErrors } };
   }
 
+  if (fields.includes("normalizedValue")) {
+    return { formError: "Цвет с таким названием уже существует" };
+  }
+
   return undefined;
 }
 
@@ -83,12 +89,45 @@ export async function createProduct(
     return { fieldErrors: fieldErrorsFromZod(parsed.error) };
   }
 
-  const { type, name, sizeType, products } = parsed.data;
+  const { type, name, sizeType, products, pendingColors, primaryImageId } =
+    parsed.data;
+
+  const pendingIds = new Set(pendingColors.map((color) => color.id));
+  const existingColorIds = [
+    ...new Set(
+      products.flatMap((product) =>
+        product.colorKeys.filter((key) => !pendingIds.has(key)),
+      ),
+    ),
+  ];
+
+  if (existingColorIds.length > 0) {
+    const existing = await prisma.colorDefinition.findMany({
+      where: { id: { in: existingColorIds } },
+      select: { id: true },
+    });
+    if (existing.length !== existingColorIds.length) {
+      return { formError: "Выбранный цвет больше не существует" };
+    }
+  }
 
   let modelId: string;
+  let createdPending = false;
 
   try {
     modelId = await prisma.$transaction(async (tx) => {
+      if (pendingColors.length > 0) {
+        await tx.colorDefinition.createMany({
+          data: pendingColors.map((color) => ({
+            id: color.id,
+            displayValue: color.displayValue,
+            normalizedValue: normalizeDisplayValue(color.displayValue),
+            hex: color.hex,
+          })),
+        });
+        createdPending = true;
+      }
+
       const model = await tx.model.create({
         data: {
           type,
@@ -99,27 +138,67 @@ export async function createProduct(
               externalId: product.externalId,
               description: product.description,
               fabric: product.fabric,
-              variants: {
-                create: product.sizes.flatMap((size) =>
-                  product.colors.map((color) => ({ size, color })),
-                ),
+              colors: {
+                create: product.colorKeys.map((colorKey) => ({
+                  colorDefinitionId: colorKey,
+                  variants: {
+                    create: product.sizes.map((size) => ({ size })),
+                  },
+                  images: {
+                    create: (
+                      product.images.find(
+                        (group) => group.colorKey === colorKey,
+                      )?.items ?? []
+                    ).map((item) => ({
+                      id: item.id,
+                      filename: item.filename,
+                    })),
+                  },
+                })),
               },
             })),
           },
         },
-        include: { products: { include: { variants: true } } },
+        include: {
+          products: {
+            include: {
+              colors: {
+                include: {
+                  variants: true,
+                  colorDefinition: {
+                    select: { normalizedValue: true, displayValue: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      await tx.model.update({
+        where: { id: model.id },
+        data: { primaryImageId },
       });
 
       const warehouses = await tx.warehouse.findMany({ select: { id: true } });
-      const variantIds = model.products.flatMap((product) =>
-        product.variants.map((variant) => variant.id),
+      const createdVariants = model.products.flatMap((product) =>
+        product.colors.flatMap((color) =>
+          color.variants.map((variant) => ({
+            variantId: variant.id,
+            size: variant.size,
+            externalId: product.externalId,
+            normalizedColor: color.colorDefinition.normalizedValue,
+            displayColor: color.colorDefinition.displayValue,
+            modelName: name,
+          })),
+        ),
       );
 
-      if (warehouses.length > 0 && variantIds.length > 0) {
+      if (warehouses.length > 0 && createdVariants.length > 0) {
         await tx.warehouseStock.createMany({
-          data: variantIds.flatMap((productVariantId) =>
+          data: createdVariants.flatMap((variant) =>
             warehouses.map((warehouse) => ({
-              productVariantId,
+              productVariantId: variant.variantId,
               warehouseId: warehouse.id,
             })),
           ),
@@ -127,59 +206,39 @@ export async function createProduct(
 
         const createdStocks = await tx.warehouseStock.findMany({
           where: {
-            productVariantId: { in: variantIds },
+            productVariantId: {
+              in: createdVariants.map((variant) => variant.variantId),
+            },
             warehouseId: { in: warehouses.map((warehouse) => warehouse.id) },
           },
           select: {
             id: true,
             warehouseId: true,
             stock: true,
-            productVariant: {
-              select: {
-                size: true,
-                color: true,
-                product: {
-                  select: {
-                    externalId: true,
-                    model: { select: { name: true } },
-                  },
-                },
-              },
-            },
+            productVariantId: true,
           },
         });
 
+        const variantById = new Map(
+          createdVariants.map((variant) => [variant.variantId, variant]),
+        );
+
         await syncDraftSnapshotsForNewStocks(
           tx,
-          createdStocks.map((entry) => ({
-            id: entry.id,
-            warehouseId: entry.warehouseId,
-            stock: entry.stock,
-            externalId: entry.productVariant.product.externalId,
-            size: entry.productVariant.size,
-            color: entry.productVariant.color,
-            modelName: entry.productVariant.product.model.name,
-          })),
+          createdStocks.map((entry) => {
+            const variant = variantById.get(entry.productVariantId);
+            return {
+              id: entry.id,
+              warehouseId: entry.warehouseId,
+              stock: entry.stock,
+              externalId: variant?.externalId ?? "",
+              size: variant?.size ?? "",
+              normalizedColor: variant?.normalizedColor ?? "",
+              displayColor: variant?.displayColor ?? "",
+              modelName: variant?.modelName ?? name,
+            };
+          }),
         );
-      }
-
-      const images = model.products.flatMap((createdProduct) => {
-        const draft = products.find(
-          (product) => product.externalId === createdProduct.externalId,
-        );
-
-        return (draft?.images ?? []).flatMap((group) =>
-          group.items.map((item) => ({
-            id: item.id,
-            filename: item.filename,
-            color: group.color,
-            productId: createdProduct.id,
-          })),
-        );
-      });
-
-      if (images.length > 0) {
-        await tx.productImage.createMany({ data: images });
       }
 
       return model.id;
@@ -195,5 +254,8 @@ export async function createProduct(
 
   revalidateTag(PRODUCTS_CACHE_TAG, { expire: 0 });
   revalidateTag(WAREHOUSE_STOCK_CACHE_TAG, { expire: 0 });
+  if (createdPending) {
+    revalidateTag(COLORS_CACHE_TAG, { expire: 0 });
+  }
   redirect(`/products/${modelId}`);
 }

@@ -89,12 +89,15 @@ export function parseStockCsv(text: string): ParseCsvResult {
     const [rawExternalId, rawSize, rawColor, rawStock] = record;
     const externalId = rawExternalId.trim();
     const size = rawSize.trim();
-    const color = rawColor.trim();
+    const color = rawColor;
     const stockRaw = rawStock.trim();
 
-    const blankIndex = [externalId, size, color, stockRaw].findIndex(
-      (value) => value.length === 0,
-    );
+    const blankIndex = [
+      externalId,
+      size,
+      color.trim(),
+      stockRaw,
+    ].findIndex((value) => value.length === 0);
     if (blankIndex !== -1) {
       return {
         ok: false,
@@ -176,8 +179,12 @@ function fieldCount(line: string, delimiter: string): number {
   }
 }
 
+export function normalizeCsvColor(color: string) {
+  return color.trim().toLowerCase();
+}
+
 function identityKey(row: Pick<CsvStockRow, "externalId" | "size" | "color">) {
-  return `${row.externalId}\0${row.size}\0${row.color}`;
+  return `${row.externalId}\0${row.size}\0${normalizeCsvColor(row.color)}`;
 }
 
 function duplicateErrorMessage(rows: CsvStockRow[]): string | undefined {

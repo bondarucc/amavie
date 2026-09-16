@@ -11,6 +11,8 @@
 export type * from './models/BlogPost'
 export type * from './models/Model'
 export type * from './models/Product'
+export type * from './models/ColorDefinition'
+export type * from './models/ProductColor'
 export type * from './models/ProductVariant'
 export type * from './models/Warehouse'
 export type * from './models/WarehouseStock'

@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { ModelType, SizeType } from "@amavie/database/browser";
+import type { ColorOption } from "../../colors/color";
 import type { CreateProductState, ProductFieldErrors } from "../schema";
 import { MAX_IMAGES_PER_COLOR, PRODUCT_IMAGE_TYPES } from "../const";
 import { deleteImage, uploadImage, uploadLimiter } from "./uploadImage";
@@ -38,7 +39,7 @@ export type ProductDraft = {
   description: string;
   fabric: string;
   sizes: string[];
-  colors: string[];
+  colorIds: string[];
   images: Record<string, ImageItem[]>;
 };
 
@@ -46,16 +47,23 @@ type CreateProductFormContextValue = {
   model: ModelDraft;
   products: ProductDraft[];
   activeProductId: string;
+  dictionaryColors: ColorOption[];
+  pendingColors: ColorOption[];
+  primaryImageId: string | null;
   fieldErrors: CreateProductState["fieldErrors"];
   canSubmit: boolean;
+  imagesReady: boolean;
   setActiveProductId: (id: string) => void;
   updateModel: (patch: Partial<ModelDraft>) => void;
   updateProduct: (id: string, patch: Partial<Omit<ProductDraft, "id">>) => void;
   addProduct: () => void;
   removeProduct: (id: string) => void;
-  addImages: (productId: string, color: string, files: File[]) => void;
-  removeImage: (productId: string, color: string, localId: string) => void;
-  removeColor: (productId: string, color: string) => void;
+  addColor: (productId: string, color: ColorOption) => void;
+  addPendingColor: (productId: string, color: ColorOption) => void;
+  addImages: (productId: string, colorId: string, files: File[]) => void;
+  removeImage: (productId: string, colorId: string, localId: string) => void;
+  removeColor: (productId: string, colorId: string) => void;
+  setPrimaryImageId: (imageId: string) => void;
 };
 
 const CreateProductFormContext =
@@ -76,7 +84,7 @@ function createEmptyProduct(id: string): ProductDraft {
     description: "",
     fabric: "",
     sizes: [],
-    colors: [],
+    colorIds: [],
     images: {},
   };
 }
@@ -102,18 +110,39 @@ function cleanupImageItem(item: ImageItem) {
   }
 }
 
+function collectImageIds(products: ProductDraft[]) {
+  const ids = new Set<string>();
+  for (const product of products) {
+    for (const items of Object.values(product.images)) {
+      for (const item of items) {
+        if (item.id) {
+          ids.add(item.id);
+        }
+      }
+    }
+  }
+  return ids;
+}
+
 export function CreateProductFormProvider({
   children,
   fieldErrors,
+  dictionaryColors,
 }: {
   children: ReactNode;
   fieldErrors: CreateProductState["fieldErrors"];
+  dictionaryColors: ColorOption[];
 }) {
   const [model, setModel] = useState<ModelDraft>(emptyModel);
+
   const [products, setProducts] = useState<ProductDraft[]>([
     createEmptyProduct(firstProductId),
   ]);
   const [activeProductId, setActiveProductId] = useState(firstProductId);
+  const [pendingColors, setPendingColors] = useState<ColorOption[]>([]);
+  const [primaryImageId, setPrimaryImageIdState] = useState<string | null>(
+    null,
+  );
   const productsRef = useRef(products);
 
   useEffect(() => {
@@ -169,6 +198,10 @@ export function CreateProductFormProvider({
       if (activeProductId === id) {
         setActiveProductId(next[0]?.id ?? activeProductId);
       }
+      const remainingIds = collectImageIds(next);
+      setPrimaryImageIdState((current) =>
+        current && remainingIds.has(current) ? current : null,
+      );
     },
     [activeProductId, products],
   );
@@ -176,7 +209,7 @@ export function CreateProductFormProvider({
   const patchImageItem = useCallback(
     (
       productId: string,
-      color: string,
+      colorId: string,
       localId: string,
       patch: Partial<ImageItem>,
     ) => {
@@ -185,12 +218,12 @@ export function CreateProductFormProvider({
           if (product.id !== productId) {
             return product;
           }
-          const items = product.images[color] ?? [];
+          const items = product.images[colorId] ?? [];
           return {
             ...product,
             images: {
               ...product.images,
-              [color]: items.map((item) =>
+              [colorId]: items.map((item) =>
                 item.localId === localId ? { ...item, ...patch } : item,
               ),
             },
@@ -202,9 +235,9 @@ export function CreateProductFormProvider({
   );
 
   const runUpload = useCallback(
-    (productId: string, color: string, item: ImageItem) => {
+    (productId: string, colorId: string, item: ImageItem) => {
       const controller = new AbortController();
-      patchImageItem(productId, color, item.localId, {
+      patchImageItem(productId, colorId, item.localId, {
         abort: () => controller.abort(),
       });
 
@@ -213,7 +246,7 @@ export function CreateProductFormProvider({
           return;
         }
 
-        patchImageItem(productId, color, item.localId, {
+        patchImageItem(productId, colorId, item.localId, {
           status: "uploading",
         });
 
@@ -221,10 +254,10 @@ export function CreateProductFormProvider({
           const result = await uploadImage(item.file, {
             signal: controller.signal,
             onProgress: (progress) =>
-              patchImageItem(productId, color, item.localId, { progress }),
+              patchImageItem(productId, colorId, item.localId, { progress }),
           });
 
-          patchImageItem(productId, color, item.localId, {
+          patchImageItem(productId, colorId, item.localId, {
             status: "success",
             progress: 100,
             id: result.id,
@@ -234,7 +267,7 @@ export function CreateProductFormProvider({
           if ((error as Error)?.name === "AbortError") {
             return;
           }
-          patchImageItem(productId, color, item.localId, {
+          patchImageItem(productId, colorId, item.localId, {
             status: "error",
             error:
               error instanceof Error
@@ -248,19 +281,20 @@ export function CreateProductFormProvider({
   );
 
   const addImages = useCallback(
-    (productId: string, color: string, files: File[]) => {
+    (productId: string, colorId: string, files: File[]) => {
       const product = productsRef.current.find((p) => p.id === productId);
       if (!product) {
         return;
       }
-      const existing = product.images[color] ?? [];
+      const existing = product.images[colorId] ?? [];
       const remainingSlots = Math.max(
         0,
         MAX_IMAGES_PER_COLOR - existing.length,
       );
 
-      const newItems: ImageItem[] = files.slice(0, remainingSlots).map(
-        (file): ImageItem => {
+      const newItems: ImageItem[] = files
+        .slice(0, remainingSlots)
+        .map((file): ImageItem => {
           const localId = crypto.randomUUID();
           const typeError = !PRODUCT_IMAGE_TYPES[file.type]
             ? "Разрешены только PNG и JPG"
@@ -275,8 +309,7 @@ export function CreateProductFormProvider({
             progress: 0,
             error: typeError,
           };
-        },
-      );
+        });
 
       setProducts((prev) =>
         prev.map((p) =>
@@ -285,7 +318,7 @@ export function CreateProductFormProvider({
                 ...p,
                 images: {
                   ...p.images,
-                  [color]: [...existing, ...newItems],
+                  [colorId]: [...existing, ...newItems],
                 },
               }
             : p,
@@ -294,15 +327,15 @@ export function CreateProductFormProvider({
 
       newItems
         .filter((item) => item.status === "pending")
-        .forEach((item) => runUpload(productId, color, item));
+        .forEach((item) => runUpload(productId, colorId, item));
     },
     [runUpload],
   );
 
   const removeImage = useCallback(
-    (productId: string, color: string, localId: string) => {
+    (productId: string, colorId: string, localId: string) => {
       const product = productsRef.current.find((p) => p.id === productId);
-      const item = product?.images[color]?.find(
+      const item = product?.images[colorId]?.find(
         (candidate) => candidate.localId === localId,
       );
       if (item) {
@@ -316,7 +349,7 @@ export function CreateProductFormProvider({
                 ...p,
                 images: {
                   ...p.images,
-                  [color]: (p.images[color] ?? []).filter(
+                  [colorId]: (p.images[colorId] ?? []).filter(
                     (candidate) => candidate.localId !== localId,
                   ),
                 },
@@ -324,34 +357,76 @@ export function CreateProductFormProvider({
             : p,
         ),
       );
+
+      if (item?.id) {
+        setPrimaryImageIdState((current) =>
+          current === item.id ? null : current,
+        );
+      }
     },
     [],
   );
 
-  const removeColor = useCallback(
-    (productId: string, color: string) => {
-      const product = productsRef.current.find((p) => p.id === productId);
-      (product?.images[color] ?? []).forEach(cleanupImageItem);
+  const addColor = useCallback((productId: string, color: ColorOption) => {
+    setProducts((prev) =>
+      prev.map((product) => {
+        if (product.id !== productId || product.colorIds.includes(color.id)) {
+          return product;
+        }
+        return {
+          ...product,
+          colorIds: [...product.colorIds, color.id],
+        };
+      }),
+    );
+  }, []);
 
-      setProducts((prev) =>
-        prev.map((p) => {
-          if (p.id !== productId) {
-            return p;
-          }
-          const nextImages = { ...p.images };
-          delete nextImages[color];
-          return {
-            ...p,
-            colors: p.colors.filter((candidate) => candidate !== color),
-            images: nextImages,
-          };
-        }),
+  const addPendingColor = useCallback(
+    (productId: string, color: ColorOption) => {
+      setPendingColors((prev) =>
+        prev.some((candidate) => candidate.id === color.id)
+          ? prev
+          : [...prev, color],
       );
+      addColor(productId, color);
     },
-    [],
+    [addColor],
   );
 
-  const canSubmit = useMemo(
+  const removeColor = useCallback((productId: string, colorId: string) => {
+    const product = productsRef.current.find((p) => p.id === productId);
+    const removedIds = new Set(
+      (product?.images[colorId] ?? [])
+        .map((item) => item.id)
+        .filter((id): id is string => Boolean(id)),
+    );
+    (product?.images[colorId] ?? []).forEach(cleanupImageItem);
+
+    setProducts((prev) =>
+      prev.map((p) => {
+        if (p.id !== productId) {
+          return p;
+        }
+        const nextImages = { ...p.images };
+        delete nextImages[colorId];
+        return {
+          ...p,
+          colorIds: p.colorIds.filter((candidate) => candidate !== colorId),
+          images: nextImages,
+        };
+      }),
+    );
+
+    setPrimaryImageIdState((current) =>
+      current && removedIds.has(current) ? null : current,
+    );
+  }, []);
+
+  const setPrimaryImageId = useCallback((imageId: string) => {
+    setPrimaryImageIdState(imageId);
+  }, []);
+
+  const imagesReady = useMemo(
     () =>
       products.every((product) =>
         Object.values(product.images).every((items) =>
@@ -360,6 +435,8 @@ export function CreateProductFormProvider({
       ),
     [products],
   );
+
+  const canSubmit = imagesReady && primaryImageId !== null;
 
   useEffect(() => {
     const index = fieldErrors?.products?.findIndex(
@@ -380,30 +457,44 @@ export function CreateProductFormProvider({
       model,
       products,
       activeProductId,
+      dictionaryColors,
+      pendingColors,
+      primaryImageId,
       fieldErrors,
       canSubmit,
+      imagesReady,
       setActiveProductId,
       updateModel,
       updateProduct,
       addProduct,
       removeProduct,
+      addColor,
+      addPendingColor,
       addImages,
       removeImage,
       removeColor,
+      setPrimaryImageId,
     }),
     [
       model,
       products,
       activeProductId,
+      dictionaryColors,
+      pendingColors,
+      primaryImageId,
       fieldErrors,
       canSubmit,
+      imagesReady,
       updateModel,
       updateProduct,
       addProduct,
       removeProduct,
+      addColor,
+      addPendingColor,
       addImages,
       removeImage,
       removeColor,
+      setPrimaryImageId,
     ],
   );
 

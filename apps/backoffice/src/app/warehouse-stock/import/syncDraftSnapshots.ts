@@ -54,7 +54,8 @@ export async function syncDraftSnapshotsForNewStocks(
     stock: number;
     externalId: string;
     size: string;
-    color: string;
+    normalizedColor: string;
+    displayColor: string;
     modelName: string;
   }>,
 ) {
@@ -83,7 +84,7 @@ export async function syncDraftSnapshotsForNewStocks(
       (snapshot) =>
         snapshot.externalId === stock.externalId &&
         snapshot.size === stock.size &&
-        snapshot.color === stock.color,
+        snapshot.color.trim().toLowerCase() === stock.normalizedColor,
     );
 
     if (matchIndex >= 0) {
@@ -115,7 +116,7 @@ export async function syncDraftSnapshotsForNewStocks(
         newStock: null,
         externalId: stock.externalId,
         size: stock.size,
-        color: stock.color,
+        color: stock.displayColor,
         modelName: stock.modelName,
         state: WarehouseStockImportSnapshotState.MISSING_INPUT,
       },

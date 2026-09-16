@@ -9,13 +9,13 @@ import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { WAREHOUSE_STOCK_CACHE_TAG } from "../const";
-import { parseStockCsv, type CsvStockRow } from "./parseCsv";
+import { normalizeCsvColor, parseStockCsv, type CsvStockRow } from "./parseCsv";
 
 export type UploadImportState = {
   error?: string;
 };
 
-const uuidSchema = z.string().uuid();
+const uuidSchema = z.uuid();
 
 export async function uploadStockImport(
   _prev: UploadImportState,
@@ -139,7 +139,8 @@ type StockMatch = {
   stock: number;
   externalId: string;
   size: string;
-  color: string;
+  normalizedColor: string;
+  displayColor: string;
   modelName: string;
 };
 
@@ -152,11 +153,17 @@ async function loadWarehouseStocks(warehouseId: string): Promise<StockMatch[]> {
       productVariant: {
         select: {
           size: true,
-          color: true,
-          product: {
+          productColor: {
             select: {
-              externalId: true,
-              model: { select: { name: true } },
+              product: {
+                select: {
+                  externalId: true,
+                  model: { select: { name: true } },
+                },
+              },
+              colorDefinition: {
+                select: { normalizedValue: true, displayValue: true },
+              },
             },
           },
         },
@@ -167,10 +174,13 @@ async function loadWarehouseStocks(warehouseId: string): Promise<StockMatch[]> {
   return stocks.map((entry) => ({
     id: entry.id,
     stock: entry.stock,
-    externalId: entry.productVariant.product.externalId,
+    externalId: entry.productVariant.productColor.product.externalId,
     size: entry.productVariant.size,
-    color: entry.productVariant.color,
-    modelName: entry.productVariant.product.model.name,
+    normalizedColor:
+      entry.productVariant.productColor.colorDefinition.normalizedValue,
+    displayColor:
+      entry.productVariant.productColor.colorDefinition.displayValue,
+    modelName: entry.productVariant.productColor.product.model.name,
   }));
 }
 
@@ -187,7 +197,7 @@ function buildSnapshots(
       identityKey(
         stock.externalId.trim(),
         stock.size.trim(),
-        stock.color.trim(),
+        stock.normalizedColor,
       ),
       stock,
     ]),
@@ -197,9 +207,12 @@ function buildSnapshots(
     [];
 
   for (const row of csvRows) {
-    const matched = remaining.get(
-      identityKey(row.externalId, row.size, row.color),
+    const rowKey = identityKey(
+      row.externalId,
+      row.size,
+      normalizeCsvColor(row.color),
     );
+    const matched = remaining.get(rowKey);
 
     if (!matched) {
       snapshots.push({
@@ -215,14 +228,14 @@ function buildSnapshots(
       continue;
     }
 
-    remaining.delete(identityKey(row.externalId, row.size, row.color));
+    remaining.delete(rowKey);
     snapshots.push({
       warehouseStockId: matched.id,
       previousStock: matched.stock,
       newStock: row.stock,
       externalId: matched.externalId,
       size: matched.size,
-      color: matched.color,
+      color: row.color,
       modelName: matched.modelName,
       state:
         matched.stock === row.stock
@@ -238,7 +251,7 @@ function buildSnapshots(
       newStock: null,
       externalId: stock.externalId,
       size: stock.size,
-      color: stock.color,
+      color: stock.displayColor,
       modelName: stock.modelName,
       state: WarehouseStockImportSnapshotState.MISSING_INPUT,
     });

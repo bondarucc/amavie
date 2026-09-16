@@ -33,6 +33,16 @@ export type Model = Prisma.ModelModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model ColorDefinition
+ * 
+ */
+export type ColorDefinition = Prisma.ColorDefinitionModel
+/**
+ * Model ProductColor
+ * 
+ */
+export type ProductColor = Prisma.ProductColorModel
+/**
  * Model ProductVariant
  * 
  */

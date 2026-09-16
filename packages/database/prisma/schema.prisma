@@ -44,37 +44,60 @@ enum SizeType {
 }
 
 model Model {
-  id        String    @id @default(uuid())
-  type      ModelType
-  name      String    @unique
-  sizeType  SizeType
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
+  id             String        @id @default(uuid())
+  type           ModelType
+  name           String        @unique
+  sizeType       SizeType
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  products       Product[]
+  primaryImageId String?       @unique
+  primaryImage   ProductImage? @relation("ModelPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
 
   @@index([type])
 }
 
 model Product {
-  id          String           @id @default(uuid())
-  externalId  String           @unique
+  id          String         @id @default(uuid())
+  externalId  String         @unique
   description String
   fabric      String
-  variants    ProductVariant[]
-  images      ProductImage[]
-  model       Model            @relation(fields: [modelId], references: [id])
+  colors      ProductColor[]
+  model       Model          @relation(fields: [modelId], references: [id])
   modelId     String
 }
 
-model ProductVariant {
-  id        String           @id @default(uuid())
-  productId String
-  product   Product          @relation(fields: [productId], references: [id])
-  size      String
-  color     String
-  stocks    WarehouseStock[]
+model ColorDefinition {
+  id              String         @id @default(uuid())
+  displayValue    String
+  normalizedValue String         @unique
+  hex             String
+  productColors   ProductColor[]
 
-  @@unique([productId, size, color])
+  @@index([displayValue])
+}
+
+model ProductColor {
+  id                String          @id @default(uuid())
+  productId         String
+  product           Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  colorDefinitionId String
+  colorDefinition   ColorDefinition @relation(fields: [colorDefinitionId], references: [id], onDelete: Restrict)
+  variants          ProductVariant[]
+  images            ProductImage[]
+
+  @@unique([productId, colorDefinitionId])
+  @@index([colorDefinitionId])
+}
+
+model ProductVariant {
+  id             String           @id @default(uuid())
+  productColorId String
+  productColor   ProductColor     @relation(fields: [productColorId], references: [id], onDelete: Cascade)
+  size           String
+  stocks         WarehouseStock[]
+
+  @@unique([productColorId, size])
 }
 
 enum WarehouseStockImportState {
@@ -142,12 +165,12 @@ model WarehouseStockImportSnapshot {
 }
 
 model ProductImage {
-  id        String   @id
-  filename  String
-  color     String
-  productId String
-  product   Product  @relation(fields: [productId], references: [id])
-  createdAt DateTime @default(now())
+  id             String       @id
+  filename       String
+  productColorId String
+  productColor   ProductColor @relation(fields: [productColorId], references: [id], onDelete: Cascade)
+  primaryForModel Model?      @relation("ModelPrimaryImage")
+  createdAt      DateTime     @default(now())
 
-  @@index([productId, color])
+  @@index([productColorId])
 }

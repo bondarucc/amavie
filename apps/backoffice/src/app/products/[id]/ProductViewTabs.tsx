@@ -1,24 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type {
-  ProductImageModel,
-  ProductModel,
-  ProductVariantModel,
-} from "@amavie/database/browser";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProductView } from "./ProductView";
+import { ProductView, ProductViewProps } from "./ProductView";
 
-export type ProductWithRelations = ProductModel & {
-  variants: ProductVariantModel[];
-  images: ProductImageModel[];
+type ProductViewTabsProps = {
+  products: Array<ProductViewProps["product"]>;
 };
 
-export function ProductViewTabs({
-  products,
-}: {
-  products: ProductWithRelations[];
-}) {
+export function ProductViewTabs({ products }: ProductViewTabsProps) {
   const [activeId, setActiveId] = useState(products[0]?.id ?? "");
 
   if (products.length === 0) {

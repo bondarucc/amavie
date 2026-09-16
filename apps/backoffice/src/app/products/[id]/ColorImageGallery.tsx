@@ -2,45 +2,50 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { ProductImageModel } from "@amavie/database/browser";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Prisma } from "@amavie/database/browser";
 
-// Only the images belonging to the currently selected color are rendered
-// (and therefore requested/downloaded) at any given time.
-export function ColorImageGallery({
-  colors,
-  images,
-}: {
-  colors: string[];
-  images: ProductImageModel[];
-}) {
-  const [selectedColor, setSelectedColor] = useState(colors[0] ?? "");
+type ColorImageGalleryProps = {
+  colors: Prisma.ProductColorGetPayload<{
+    include: {
+      colorDefinition: true;
+      images: true;
+    };
+  }>[];
+};
+
+export function ColorImageGallery({ colors }: ColorImageGalleryProps) {
+  const [selectedColorId, setSelectedColorId] = useState(colors[0]?.id ?? "");
   const [previewFilename, setPreviewFilename] = useState<string | null>(null);
 
   if (colors.length === 0) {
     return null;
   }
 
-  const visibleImages = images.filter(
-    (image) => image.color === selectedColor,
-  );
+  const selected = colors.find((color) => color.id === selectedColorId);
+  const visibleImages = selected?.images ?? [];
 
   return (
     <div className="flex flex-col gap-3">
       <ToggleGroup
         variant="outline"
         className="flex w-full flex-wrap"
-        value={selectedColor ? [selectedColor] : []}
+        value={selectedColorId ? [selectedColorId] : []}
         onValueChange={(value) => {
           if (value.length > 0) {
-            setSelectedColor(value[0]);
+            setSelectedColorId(value[0]);
           }
         }}
       >
         {colors.map((color) => (
-          <ToggleGroupItem key={color} value={color}>
-            {color}
+          <ToggleGroupItem key={color.id} value={color.id}>
+            <span
+              className="size-3 shrink-0 rounded-sm border border-current"
+              style={{ backgroundColor: color.colorDefinition.hex }}
+              aria-hidden
+            />
+            {color.colorDefinition.displayValue}
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
@@ -64,7 +69,7 @@ export function ColorImageGallery({
               alt=""
               fill
               sizes="84px"
-              className="object-cover"
+              className="object-contain"
             />
           </button>
         ))}

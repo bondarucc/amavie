@@ -33,6 +33,12 @@ export default function Sidebar({ children }: PropsWithChildren) {
                 />
               </SidebarMenuItem>
               <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={pathname.startsWith("/colors")}
+                  render={<Link href="/colors">Словарь цветов</Link>}
+                />
+              </SidebarMenuItem>
+              <SidebarMenuItem>
                 <SidebarMenuButton>Заказы</SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>

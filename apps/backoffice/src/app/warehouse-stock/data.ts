@@ -21,16 +21,13 @@ export async function cachedWarehouses(): Promise<WarehouseOption[]> {
   });
 }
 
-export async function cachedProductColorImages(
-  productId: string,
-  color: string,
-) {
+export async function cachedProductColorImages(productColorId: string) {
   "use cache";
   cacheLife("hours");
   cacheTag(PRODUCTS_CACHE_TAG);
 
   return prisma.productImage.findMany({
-    where: { productId, color },
+    where: { productColorId },
     select: { id: true, filename: true },
     orderBy: { createdAt: "asc" },
   });
@@ -69,14 +66,18 @@ export async function cachedStockTable(query: StockQuery): Promise<{
     };
   }
 
+  const colorWhere: Prisma.ColorDefinitionWhereInput | undefined = query.color
+    ? { displayValue: { contains: query.color, mode: "insensitive" } }
+    : undefined;
+
   const where: Prisma.ProductVariantWhereInput = {
     ...(query.size
       ? { size: { contains: query.size, mode: "insensitive" } }
       : {}),
-    ...(query.color
-      ? { color: { contains: query.color, mode: "insensitive" } }
-      : {}),
-    ...(Object.keys(productWhere).length > 0 ? { product: productWhere } : {}),
+    productColor: {
+      ...(colorWhere ? { colorDefinition: colorWhere } : {}),
+      ...(Object.keys(productWhere).length > 0 ? { product: productWhere } : {}),
+    },
   };
 
   const orderBy = buildOrderBy(query);
@@ -91,13 +92,18 @@ export async function cachedStockTable(query: StockQuery): Promise<{
       select: {
         id: true,
         size: true,
-        color: true,
-        productId: true,
-        product: {
+        productColor: {
           select: {
-            externalId: true,
-            description: true,
-            model: { select: { name: true, type: true } },
+            id: true,
+            product: {
+              select: {
+                id: true,
+                externalId: true,
+                description: true,
+                model: { select: { name: true, type: true } },
+              },
+            },
+            colorDefinition: { select: { displayValue: true } },
           },
         },
         stocks: {
@@ -122,13 +128,14 @@ export async function cachedStockTable(query: StockQuery): Promise<{
 
     return {
       variantId: variant.id,
-      productId: variant.productId,
-      modelName: variant.product.model.name,
-      modelType: variant.product.model.type,
-      externalId: variant.product.externalId,
-      description: variant.product.description,
+      productId: variant.productColor.product.id,
+      productColorId: variant.productColor.id,
+      modelName: variant.productColor.product.model.name,
+      modelType: variant.productColor.product.model.type,
+      externalId: variant.productColor.product.externalId,
+      description: variant.productColor.product.description,
       size: variant.size,
-      color: variant.color,
+      color: variant.productColor.colorDefinition.displayValue,
       stock: warehouseStocks.reduce((sum, entry) => sum + entry.stock, 0),
       warehouseStocks,
     };
@@ -151,32 +158,32 @@ function buildOrderBy(
 
   if (query.sort === "externalId") {
     return [
-      { product: { externalId: dir } },
-      { product: { model: { name: "asc" } } },
+      { productColor: { product: { externalId: dir } } },
+      { productColor: { product: { model: { name: "asc" } } } },
       { size: "asc" },
     ];
   }
 
   if (query.sort === "color") {
     return [
-      { color: dir },
-      { product: { model: { name: "asc" } } },
-      { product: { externalId: "asc" } },
+      { productColor: { colorDefinition: { displayValue: dir } } },
+      { productColor: { product: { model: { name: "asc" } } } },
+      { productColor: { product: { externalId: "asc" } } },
       { size: "asc" },
     ];
   }
 
   if (query.sort === "modelName") {
     return [
-      { product: { model: { name: dir } } },
-      { product: { externalId: "asc" } },
+      { productColor: { product: { model: { name: dir } } } },
+      { productColor: { product: { externalId: "asc" } } },
       { size: "asc" },
     ];
   }
 
   return [
-    { product: { model: { name: "asc" } } },
-    { product: { externalId: "asc" } },
+    { productColor: { product: { model: { name: "asc" } } } },
+    { productColor: { product: { externalId: "asc" } } },
     { size: "asc" },
   ];
 }

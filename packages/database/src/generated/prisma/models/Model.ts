@@ -31,6 +31,7 @@ export type ModelMinAggregateOutputType = {
   sizeType: $Enums.SizeType | null
   createdAt: Date | null
   updatedAt: Date | null
+  primaryImageId: string | null
 }
 
 export type ModelMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type ModelMaxAggregateOutputType = {
   sizeType: $Enums.SizeType | null
   createdAt: Date | null
   updatedAt: Date | null
+  primaryImageId: string | null
 }
 
 export type ModelCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type ModelCountAggregateOutputType = {
   sizeType: number
   createdAt: number
   updatedAt: number
+  primaryImageId: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type ModelMinAggregateInputType = {
   sizeType?: true
   createdAt?: true
   updatedAt?: true
+  primaryImageId?: true
 }
 
 export type ModelMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type ModelMaxAggregateInputType = {
   sizeType?: true
   createdAt?: true
   updatedAt?: true
+  primaryImageId?: true
 }
 
 export type ModelCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type ModelCountAggregateInputType = {
   sizeType?: true
   createdAt?: true
   updatedAt?: true
+  primaryImageId?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type ModelGroupByOutputType = {
   sizeType: $Enums.SizeType
   createdAt: Date
   updatedAt: Date
+  primaryImageId: string | null
   _count: ModelCountAggregateOutputType | null
   _min: ModelMinAggregateOutputType | null
   _max: ModelMaxAggregateOutputType | null
@@ -190,7 +197,9 @@ export type ModelWhereInput = {
   sizeType?: Prisma.EnumSizeTypeFilter<"Model"> | $Enums.SizeType
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
+  primaryImageId?: Prisma.StringNullableFilter<"Model"> | string | null
   products?: Prisma.ProductListRelationFilter
+  primaryImage?: Prisma.XOR<Prisma.ProductImageNullableScalarRelationFilter, Prisma.ProductImageWhereInput> | null
 }
 
 export type ModelOrderByWithRelationInput = {
@@ -200,12 +209,15 @@ export type ModelOrderByWithRelationInput = {
   sizeType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  primaryImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   products?: Prisma.ProductOrderByRelationAggregateInput
+  primaryImage?: Prisma.ProductImageOrderByWithRelationInput
 }
 
 export type ModelWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   name?: string
+  primaryImageId?: string
   AND?: Prisma.ModelWhereInput | Prisma.ModelWhereInput[]
   OR?: Prisma.ModelWhereInput[]
   NOT?: Prisma.ModelWhereInput | Prisma.ModelWhereInput[]
@@ -214,7 +226,8 @@ export type ModelWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   products?: Prisma.ProductListRelationFilter
-}, "id" | "name">
+  primaryImage?: Prisma.XOR<Prisma.ProductImageNullableScalarRelationFilter, Prisma.ProductImageWhereInput> | null
+}, "id" | "name" | "primaryImageId">
 
 export type ModelOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -223,6 +236,7 @@ export type ModelOrderByWithAggregationInput = {
   sizeType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  primaryImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ModelCountOrderByAggregateInput
   _max?: Prisma.ModelMaxOrderByAggregateInput
   _min?: Prisma.ModelMinOrderByAggregateInput
@@ -238,6 +252,7 @@ export type ModelScalarWhereWithAggregatesInput = {
   sizeType?: Prisma.EnumSizeTypeWithAggregatesFilter<"Model"> | $Enums.SizeType
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
+  primaryImageId?: Prisma.StringNullableWithAggregatesFilter<"Model"> | string | null
 }
 
 export type ModelCreateInput = {
@@ -248,6 +263,7 @@ export type ModelCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutModelInput
+  primaryImage?: Prisma.ProductImageCreateNestedOneWithoutPrimaryForModelInput
 }
 
 export type ModelUncheckedCreateInput = {
@@ -257,6 +273,7 @@ export type ModelUncheckedCreateInput = {
   sizeType: $Enums.SizeType
   createdAt?: Date | string
   updatedAt?: Date | string
+  primaryImageId?: string | null
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutModelInput
 }
 
@@ -268,6 +285,7 @@ export type ModelUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutModelNestedInput
+  primaryImage?: Prisma.ProductImageUpdateOneWithoutPrimaryForModelNestedInput
 }
 
 export type ModelUncheckedUpdateInput = {
@@ -277,6 +295,7 @@ export type ModelUncheckedUpdateInput = {
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   products?: Prisma.ProductUncheckedUpdateManyWithoutModelNestedInput
 }
 
@@ -287,6 +306,7 @@ export type ModelCreateManyInput = {
   sizeType: $Enums.SizeType
   createdAt?: Date | string
   updatedAt?: Date | string
+  primaryImageId?: string | null
 }
 
 export type ModelUpdateManyMutationInput = {
@@ -305,6 +325,7 @@ export type ModelUncheckedUpdateManyInput = {
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ModelCountOrderByAggregateInput = {
@@ -314,6 +335,7 @@ export type ModelCountOrderByAggregateInput = {
   sizeType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  primaryImageId?: Prisma.SortOrder
 }
 
 export type ModelMaxOrderByAggregateInput = {
@@ -323,6 +345,7 @@ export type ModelMaxOrderByAggregateInput = {
   sizeType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  primaryImageId?: Prisma.SortOrder
 }
 
 export type ModelMinOrderByAggregateInput = {
@@ -332,11 +355,17 @@ export type ModelMinOrderByAggregateInput = {
   sizeType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  primaryImageId?: Prisma.SortOrder
 }
 
 export type ModelScalarRelationFilter = {
   is?: Prisma.ModelWhereInput
   isNot?: Prisma.ModelWhereInput
+}
+
+export type ModelNullableScalarRelationFilter = {
+  is?: Prisma.ModelWhereInput | null
+  isNot?: Prisma.ModelWhereInput | null
 }
 
 export type EnumModelTypeFieldUpdateOperationsInput = {
@@ -345,6 +374,10 @@ export type EnumModelTypeFieldUpdateOperationsInput = {
 
 export type EnumSizeTypeFieldUpdateOperationsInput = {
   set?: $Enums.SizeType
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type ModelCreateNestedOneWithoutProductsInput = {
@@ -361,6 +394,38 @@ export type ModelUpdateOneRequiredWithoutProductsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ModelUpdateToOneWithWhereWithoutProductsInput, Prisma.ModelUpdateWithoutProductsInput>, Prisma.ModelUncheckedUpdateWithoutProductsInput>
 }
 
+export type ModelCreateNestedOneWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.ModelCreateWithoutPrimaryImageInput, Prisma.ModelUncheckedCreateWithoutPrimaryImageInput>
+  connectOrCreate?: Prisma.ModelCreateOrConnectWithoutPrimaryImageInput
+  connect?: Prisma.ModelWhereUniqueInput
+}
+
+export type ModelUncheckedCreateNestedOneWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.ModelCreateWithoutPrimaryImageInput, Prisma.ModelUncheckedCreateWithoutPrimaryImageInput>
+  connectOrCreate?: Prisma.ModelCreateOrConnectWithoutPrimaryImageInput
+  connect?: Prisma.ModelWhereUniqueInput
+}
+
+export type ModelUpdateOneWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.ModelCreateWithoutPrimaryImageInput, Prisma.ModelUncheckedCreateWithoutPrimaryImageInput>
+  connectOrCreate?: Prisma.ModelCreateOrConnectWithoutPrimaryImageInput
+  upsert?: Prisma.ModelUpsertWithoutPrimaryImageInput
+  disconnect?: Prisma.ModelWhereInput | boolean
+  delete?: Prisma.ModelWhereInput | boolean
+  connect?: Prisma.ModelWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ModelUpdateToOneWithWhereWithoutPrimaryImageInput, Prisma.ModelUpdateWithoutPrimaryImageInput>, Prisma.ModelUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type ModelUncheckedUpdateOneWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.ModelCreateWithoutPrimaryImageInput, Prisma.ModelUncheckedCreateWithoutPrimaryImageInput>
+  connectOrCreate?: Prisma.ModelCreateOrConnectWithoutPrimaryImageInput
+  upsert?: Prisma.ModelUpsertWithoutPrimaryImageInput
+  disconnect?: Prisma.ModelWhereInput | boolean
+  delete?: Prisma.ModelWhereInput | boolean
+  connect?: Prisma.ModelWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ModelUpdateToOneWithWhereWithoutPrimaryImageInput, Prisma.ModelUpdateWithoutPrimaryImageInput>, Prisma.ModelUncheckedUpdateWithoutPrimaryImageInput>
+}
+
 export type ModelCreateWithoutProductsInput = {
   id?: string
   type: $Enums.ModelType
@@ -368,6 +433,7 @@ export type ModelCreateWithoutProductsInput = {
   sizeType: $Enums.SizeType
   createdAt?: Date | string
   updatedAt?: Date | string
+  primaryImage?: Prisma.ProductImageCreateNestedOneWithoutPrimaryForModelInput
 }
 
 export type ModelUncheckedCreateWithoutProductsInput = {
@@ -377,6 +443,7 @@ export type ModelUncheckedCreateWithoutProductsInput = {
   sizeType: $Enums.SizeType
   createdAt?: Date | string
   updatedAt?: Date | string
+  primaryImageId?: string | null
 }
 
 export type ModelCreateOrConnectWithoutProductsInput = {
@@ -402,6 +469,7 @@ export type ModelUpdateWithoutProductsInput = {
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  primaryImage?: Prisma.ProductImageUpdateOneWithoutPrimaryForModelNestedInput
 }
 
 export type ModelUncheckedUpdateWithoutProductsInput = {
@@ -411,6 +479,63 @@ export type ModelUncheckedUpdateWithoutProductsInput = {
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ModelCreateWithoutPrimaryImageInput = {
+  id?: string
+  type: $Enums.ModelType
+  name: string
+  sizeType: $Enums.SizeType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCreateNestedManyWithoutModelInput
+}
+
+export type ModelUncheckedCreateWithoutPrimaryImageInput = {
+  id?: string
+  type: $Enums.ModelType
+  name: string
+  sizeType: $Enums.SizeType
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutModelInput
+}
+
+export type ModelCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.ModelWhereUniqueInput
+  create: Prisma.XOR<Prisma.ModelCreateWithoutPrimaryImageInput, Prisma.ModelUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type ModelUpsertWithoutPrimaryImageInput = {
+  update: Prisma.XOR<Prisma.ModelUpdateWithoutPrimaryImageInput, Prisma.ModelUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.ModelCreateWithoutPrimaryImageInput, Prisma.ModelUncheckedCreateWithoutPrimaryImageInput>
+  where?: Prisma.ModelWhereInput
+}
+
+export type ModelUpdateToOneWithWhereWithoutPrimaryImageInput = {
+  where?: Prisma.ModelWhereInput
+  data: Prisma.XOR<Prisma.ModelUpdateWithoutPrimaryImageInput, Prisma.ModelUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type ModelUpdateWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUpdateManyWithoutModelNestedInput
+}
+
+export type ModelUncheckedUpdateWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutModelNestedInput
 }
 
 
@@ -451,7 +576,9 @@ export type ModelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sizeType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  primaryImageId?: boolean
   products?: boolean | Prisma.Model$productsArgs<ExtArgs>
+  primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
   _count?: boolean | Prisma.ModelCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["model"]>
 
@@ -462,6 +589,8 @@ export type ModelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   sizeType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  primaryImageId?: boolean
+  primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
 }, ExtArgs["result"]["model"]>
 
 export type ModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -471,6 +600,8 @@ export type ModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   sizeType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  primaryImageId?: boolean
+  primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
 }, ExtArgs["result"]["model"]>
 
 export type ModelSelectScalar = {
@@ -480,20 +611,27 @@ export type ModelSelectScalar = {
   sizeType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  primaryImageId?: boolean
 }
 
-export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "sizeType" | "createdAt" | "updatedAt", ExtArgs["result"]["model"]>
+export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "sizeType" | "createdAt" | "updatedAt" | "primaryImageId", ExtArgs["result"]["model"]>
 export type ModelInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Model$productsArgs<ExtArgs>
+  primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
   _count?: boolean | Prisma.ModelCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ModelIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ModelIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ModelIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
+}
+export type ModelIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
+}
 
 export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Model"
   objects: {
     products: Prisma.$ProductPayload<ExtArgs>[]
+    primaryImage: Prisma.$ProductImagePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -502,6 +640,7 @@ export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     sizeType: $Enums.SizeType
     createdAt: Date
     updatedAt: Date
+    primaryImageId: string | null
   }, ExtArgs["result"]["model"]>
   composites: {}
 }
@@ -897,6 +1036,7 @@ readonly fields: ModelFieldRefs;
 export interface Prisma__ModelClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   products<T extends Prisma.Model$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Model$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  primaryImage<T extends Prisma.Model$primaryImageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Model$primaryImageArgs<ExtArgs>>): Prisma.Prisma__ProductImageClient<runtime.Types.Result.GetResult<Prisma.$ProductImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -932,6 +1072,7 @@ export interface ModelFieldRefs {
   readonly sizeType: Prisma.FieldRef<"Model", 'SizeType'>
   readonly createdAt: Prisma.FieldRef<"Model", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Model", 'DateTime'>
+  readonly primaryImageId: Prisma.FieldRef<"Model", 'String'>
 }
     
 
@@ -1186,6 +1327,10 @@ export type ModelCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.ModelCreateManyInput | Prisma.ModelCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ModelIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1256,6 +1401,10 @@ export type ModelUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Models to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ModelIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1346,6 +1495,25 @@ export type Model$productsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
+}
+
+/**
+ * Model.primaryImage
+ */
+export type Model$primaryImageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProductImage
+   */
+  select?: Prisma.ProductImageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProductImage
+   */
+  omit?: Prisma.ProductImageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductImageInclude<ExtArgs> | null
+  where?: Prisma.ProductImageWhereInput
 }
 
 /**

@@ -1,12 +1,29 @@
 import { Badge } from "@/components/ui/badge";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { ColorImageGallery } from "./ColorImageGallery";
-import type { ProductWithRelations } from "./ProductViewTabs";
+import { Prisma } from "@amavie/database";
 
-export function ProductView({ product }: { product: ProductWithRelations }) {
-  const sizes = [...new Set(product.variants.map((variant) => variant.size))];
-  const colors = [
-    ...new Set(product.variants.map((variant) => variant.color)),
+export type ProductViewProps = {
+  product: Prisma.ProductGetPayload<{
+    include: {
+      colors: {
+        include: {
+          colorDefinition: true;
+          images: true;
+          variants: true;
+        };
+      };
+    };
+  }>;
+};
+
+export function ProductView({ product }: ProductViewProps) {
+  const sizes = [
+    ...new Set(
+      product.colors.flatMap((color) =>
+        color.variants.map((variant) => variant.size),
+      ),
+    ),
   ];
 
   return (
@@ -34,7 +51,7 @@ export function ProductView({ product }: { product: ProductWithRelations }) {
 
       <Field>
         <FieldLabel>Цвета</FieldLabel>
-        <ColorImageGallery colors={colors} images={product.images} />
+        <ColorImageGallery colors={product.colors} />
       </Field>
     </div>
   );

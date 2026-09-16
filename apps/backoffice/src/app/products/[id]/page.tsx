@@ -16,20 +16,14 @@ export default function ProductViewPage({
 }: PageProps<"/products/[id]">) {
   return (
     <div className="p-6 max-w-full overflow-y-auto w-full">
-      <Suspense
-        fallback={<p className="text-muted-foreground">Загрузка…</p>}
-      >
+      <Suspense fallback={<p className="text-muted-foreground">Загрузка…</p>}>
         <ModelView params={params} />
       </Suspense>
     </div>
   );
 }
 
-async function ModelView({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+async function ModelView({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const model = await prisma.model.findUnique({
@@ -37,8 +31,13 @@ async function ModelView({
     include: {
       products: {
         include: {
-          variants: true,
-          images: true,
+          colors: {
+            include: {
+              colorDefinition: true,
+              images: { orderBy: { createdAt: "asc" } },
+              variants: true,
+            },
+          },
         },
       },
     },

@@ -31,6 +31,7 @@ export type WarehouseStockEntry = {
 export type StockRow = {
   variantId: string;
   productId: string;
+  productColorId: string;
   modelName: string;
   modelType: ModelType;
   externalId: string;

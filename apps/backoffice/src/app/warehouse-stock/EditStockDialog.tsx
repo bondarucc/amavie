@@ -146,7 +146,7 @@ function EditStockForm({
       </div>
       <Field>
         <FieldLabel>Изображения</FieldLabel>
-        <ModalColorImages productId={row.productId} color={row.color} />
+        <ModalColorImages productColorId={row.productColorId} />
       </Field>
       {isAllWarehouses ? (
         <div className="flex flex-col gap-3">
@@ -216,19 +216,13 @@ function EditStockForm({
   );
 }
 
-function ModalColorImages({
-  productId,
-  color,
-}: {
-  productId: string;
-  color: string;
-}) {
+function ModalColorImages({ productColorId }: { productColorId: string }) {
   const [images, setImages] = useState<ColorImage[] | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    getProductColorImages(productId, color)
+    getProductColorImages(productColorId)
       .then((result) => {
         if (!cancelled) {
           setImages(result);
@@ -243,7 +237,7 @@ function ModalColorImages({
     return () => {
       cancelled = true;
     };
-  }, [productId, color]);
+  }, [productColorId]);
 
   if (images === null) {
     return <p className="text-sm text-muted-foreground">Загрузка…</p>;

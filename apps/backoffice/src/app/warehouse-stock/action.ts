@@ -127,6 +127,6 @@ export async function updateVariantStocks(input: {
   return { ok: true };
 }
 
-export async function getProductColorImages(productId: string, color: string) {
-  return cachedProductColorImages(productId, color);
+export async function getProductColorImages(productColorId: string) {
+  return cachedProductColorImages(productColorId);
 }
