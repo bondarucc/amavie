@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import { MODEL_TYPE_LABELS, PRODUCTS_CACHE_TAG } from "./const";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 
 export default function ProductsPage() {
   return (
@@ -39,6 +41,11 @@ async function ProductList() {
       id: true,
       name: true,
       type: true,
+      primaryImage: {
+        select: {
+          filename: true,
+        },
+      },
     },
   });
 
@@ -47,20 +54,33 @@ async function ProductList() {
   }
 
   return (
-    <ul className="divide-y divide-border rounded-2xl border border-border">
-      {models.map((model) => (
-        <li key={model.id}>
-          <Link
-            href={`/products/${model.id}`}
-            className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3 hover:bg-muted/50"
-          >
-            <span className="font-medium">{model.name}</span>
-            <span className="text-sm text-muted-foreground">
-              {MODEL_TYPE_LABELS[model.type]}
-            </span>
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="flex flex-wrap gap-8">
+        {models.map((model) => (
+          <li key={model.id}>
+            <Link href={`/products/${model.id}`}>
+              <Card className="w-80">
+                <CardHeader>
+                  <CardTitle>
+                    {MODEL_TYPE_LABELS[model.type]} {model.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative aspect-2667/4000 w-full">
+                    <Image
+                      src={`/products/images/${model.primaryImage?.filename ?? ""}`}
+                      alt={model.name}
+                      fill
+                      sizes="320px"
+                      className="object-contain"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
