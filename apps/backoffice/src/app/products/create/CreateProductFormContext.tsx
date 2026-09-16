@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { ModelType, SizeType } from "@amavie/database/browser";
+import { ModelSeason, ModelType, SizeType } from "@amavie/database/browser";
 import type { ColorOption } from "../../colors/color";
 import type { CreateProductState, ProductFieldErrors } from "../schema";
 import { MAX_IMAGES_PER_COLOR, PRODUCT_IMAGE_TYPES } from "../const";
@@ -20,6 +20,7 @@ export type ModelDraft = {
   type: ModelType | null;
   name: string;
   sizeType: SizeType;
+  season: ModelSeason | null;
 };
 
 export type ImageItem = {
@@ -73,6 +74,7 @@ const emptyModel = {
   type: null,
   name: "",
   sizeType: SizeType.Letter,
+  season: null,
 } as const satisfies ModelDraft;
 
 const firstProductId = "product-0";

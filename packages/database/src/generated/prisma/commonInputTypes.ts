@@ -154,6 +154,13 @@ export type EnumSizeTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumSizeTypeFilter<$PrismaModel> | $Enums.SizeType
 }
 
+export type EnumModelSeasonFilter<$PrismaModel = never> = {
+  equals?: $Enums.ModelSeason | Prisma.EnumModelSeasonFieldRefInput<$PrismaModel>
+  in?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumModelSeasonFilter<$PrismaModel> | $Enums.ModelSeason
+}
+
 export type StringNullableFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -192,6 +199,16 @@ export type EnumSizeTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSizeTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSizeTypeFilter<$PrismaModel>
+}
+
+export type EnumModelSeasonWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ModelSeason | Prisma.EnumModelSeasonFieldRefInput<$PrismaModel>
+  in?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumModelSeasonWithAggregatesFilter<$PrismaModel> | $Enums.ModelSeason
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumModelSeasonFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumModelSeasonFilter<$PrismaModel>
 }
 
 export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -447,6 +464,13 @@ export type NestedEnumSizeTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumSizeTypeFilter<$PrismaModel> | $Enums.SizeType
 }
 
+export type NestedEnumModelSeasonFilter<$PrismaModel = never> = {
+  equals?: $Enums.ModelSeason | Prisma.EnumModelSeasonFieldRefInput<$PrismaModel>
+  in?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumModelSeasonFilter<$PrismaModel> | $Enums.ModelSeason
+}
+
 export type NestedStringNullableFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -479,6 +503,16 @@ export type NestedEnumSizeTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSizeTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSizeTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumModelSeasonWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ModelSeason | Prisma.EnumModelSeasonFieldRefInput<$PrismaModel>
+  in?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ModelSeason[] | Prisma.ListEnumModelSeasonFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumModelSeasonWithAggregatesFilter<$PrismaModel> | $Enums.ModelSeason
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumModelSeasonFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumModelSeasonFilter<$PrismaModel>
 }
 
 export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {

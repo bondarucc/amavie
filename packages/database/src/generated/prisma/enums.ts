@@ -45,6 +45,15 @@ export const SizeType = {
 export type SizeType = (typeof SizeType)[keyof typeof SizeType]
 
 
+export const ModelSeason = {
+  Winter: 'Winter',
+  Summer: 'Summer',
+  MidSeason: 'MidSeason'
+} as const
+
+export type ModelSeason = (typeof ModelSeason)[keyof typeof ModelSeason]
+
+
 export const WarehouseStockImportState = {
   draft: 'draft',
   applied: 'applied'

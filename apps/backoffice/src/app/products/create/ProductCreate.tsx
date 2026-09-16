@@ -24,10 +24,7 @@ export default function ProductCreate({
   const { bfcacheId } = useRouter();
 
   return (
-    <ProductCreateDraft
-      key={bfcacheId}
-      dictionaryColors={dictionaryColors}
-    />
+    <ProductCreateDraft key={bfcacheId} dictionaryColors={dictionaryColors} />
   );
 }
 
@@ -93,9 +90,7 @@ function CreateProductForm({
 function FormHiddenInputs() {
   const { model, products, pendingColors, primaryImageId } =
     useCreateProductForm();
-  const usedColorIds = new Set(
-    products.flatMap((product) => product.colorIds),
-  );
+  const usedColorIds = new Set(products.flatMap((product) => product.colorIds));
   const attachedPendingColors = pendingColors.filter((color) =>
     usedColorIds.has(color.id),
   );
@@ -105,6 +100,7 @@ function FormHiddenInputs() {
       <input type="hidden" name="type" value={model.type ?? ""} />
       <input type="hidden" name="name" value={model.name} />
       <input type="hidden" name="sizeType" value={model.sizeType} />
+      <input type="hidden" name="season" value={model.season ?? ""} />
       <input type="hidden" name="primaryImageId" value={primaryImageId ?? ""} />
       {attachedPendingColors.map((color, index) => (
         <Fragment key={color.id}>

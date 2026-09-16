@@ -1,6 +1,6 @@
 "use client";
 
-import { SizeType } from "@amavie/database/browser";
+import { ModelSeason, SizeType } from "@amavie/database/browser";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  MODEL_SEASON_LABELS,
+  MODEL_SEASONS,
   MODEL_TYPE_LABELS,
   MODEL_TYPES,
   SIZE_TYPE_LABELS,
@@ -78,6 +80,29 @@ export function ModelFields() {
           ))}
         </RadioGroup>
         <FieldError>{fieldErrors?.sizeType}</FieldError>
+      </Field>
+
+      <Field>
+        <FieldLabel>Сезон</FieldLabel>
+        <RadioGroup
+          className="gap-2"
+          value={model.season ?? ""}
+          onValueChange={(value) => {
+            if (MODEL_SEASONS.includes(value as ModelSeason)) {
+              updateModel({ season: value as ModelSeason });
+            }
+          }}
+        >
+          {MODEL_SEASONS.map((value) => (
+            <Field key={value} orientation="horizontal">
+              <RadioGroupItem value={value} id={`season-${value}`} />
+              <FieldLabel htmlFor={`season-${value}`}>
+                {MODEL_SEASON_LABELS[value]}
+              </FieldLabel>
+            </Field>
+          ))}
+        </RadioGroup>
+        <FieldError>{fieldErrors?.season}</FieldError>
       </Field>
     </>
   );

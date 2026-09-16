@@ -43,11 +43,18 @@ enum SizeType {
   Dimension
 }
 
+enum ModelSeason {
+  Winter
+  Summer
+  MidSeason
+}
+
 model Model {
   id             String        @id @default(uuid())
   type           ModelType
   name           String        @unique
   sizeType       SizeType
+  season         ModelSeason
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   products       Product[]

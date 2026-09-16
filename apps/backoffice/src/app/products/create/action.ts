@@ -89,8 +89,15 @@ export async function createProduct(
     return { fieldErrors: fieldErrorsFromZod(parsed.error) };
   }
 
-  const { type, name, sizeType, products, pendingColors, primaryImageId } =
-    parsed.data;
+  const {
+    type,
+    name,
+    sizeType,
+    season,
+    products,
+    pendingColors,
+    primaryImageId,
+  } = parsed.data;
 
   const pendingIds = new Set(pendingColors.map((color) => color.id));
   const existingColorIds = [
@@ -133,6 +140,7 @@ export async function createProduct(
           type,
           name,
           sizeType,
+          season,
           products: {
             create: products.map((product) => ({
               externalId: product.externalId,

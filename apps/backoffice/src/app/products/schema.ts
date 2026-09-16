@@ -1,4 +1,4 @@
-import { ModelType, SizeType } from "@amavie/database/browser";
+import { ModelSeason, ModelType, SizeType } from "@amavie/database/browser";
 import { z } from "zod";
 import { HEX_PATTERN, normalizeDisplayValue } from "../colors/color";
 import {
@@ -62,6 +62,7 @@ export const createProductSchema = z
       .trim()
       .regex(NAME_PATTERN, "Название должно быть одним словом"),
     sizeType: z.enum(SizeType, { error: "Выберите тип размера" }),
+    season: z.enum(ModelSeason, { error: "Выберите сезон" }),
     primaryImageId: z.uuid("Выберите главное изображение"),
     pendingColors: z.array(pendingColorSchema),
     products: z
@@ -178,6 +179,7 @@ export type CreateProductState = {
     type?: string;
     name?: string;
     sizeType?: string;
+    season?: string;
     primaryImageId?: string;
     products?: ProductFieldErrors[];
   };
@@ -257,6 +259,7 @@ export function parseCreateProductForm(formData: FormData) {
     type: String(formData.get("type") ?? ""),
     name: String(formData.get("name") ?? ""),
     sizeType: String(formData.get("sizeType") ?? ""),
+    season: String(formData.get("season") ?? ""),
     primaryImageId: String(formData.get("primaryImageId") ?? ""),
     pendingColors: parsePendingColors(formData),
     products: parseProducts(formData),
@@ -301,6 +304,7 @@ export function fieldErrorsFromZod(
       head === "type" ||
       head === "name" ||
       head === "sizeType" ||
+      head === "season" ||
       head === "primaryImageId"
     ) {
       fieldErrors[head] ??= issue.message;
