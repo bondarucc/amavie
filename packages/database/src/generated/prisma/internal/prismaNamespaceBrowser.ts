@@ -98,6 +98,7 @@ export const ModelScalarFieldEnum = {
   name: 'name',
   sizeType: 'sizeType',
   season: 'season',
+  purposes: 'purposes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   primaryImageId: 'primaryImageId'

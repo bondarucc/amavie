@@ -1298,6 +1298,7 @@ export const ModelScalarFieldEnum = {
   name: 'name',
   sizeType: 'sizeType',
   season: 'season',
+  purposes: 'purposes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   primaryImageId: 'primaryImageId'
@@ -1543,6 +1544,20 @@ export type EnumModelSeasonFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'ModelSeason[]'
  */
 export type ListEnumModelSeasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModelSeason[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ModelPurpose[]'
+ */
+export type ListEnumModelPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModelPurpose[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ModelPurpose'
+ */
+export type EnumModelPurposeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModelPurpose'>
     
 
 

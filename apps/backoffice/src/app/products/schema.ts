@@ -1,4 +1,9 @@
-import { ModelSeason, ModelType, SizeType } from "@amavie/database/browser";
+import {
+  ModelPurpose,
+  ModelSeason,
+  ModelType,
+  SizeType,
+} from "@amavie/database/browser";
 import { z } from "zod";
 import { HEX_PATTERN, normalizeDisplayValue } from "../colors/color";
 import {
@@ -63,6 +68,9 @@ export const createProductSchema = z
       .regex(NAME_PATTERN, "Название должно быть одним словом"),
     sizeType: z.enum(SizeType, { error: "Выберите тип размера" }),
     season: z.enum(ModelSeason, { error: "Выберите сезон" }),
+    purposes: z
+      .array(z.enum(ModelPurpose))
+      .min(1, "Выберите хотя бы одно назначение"),
     primaryImageId: z.uuid("Выберите главное изображение"),
     pendingColors: z.array(pendingColorSchema),
     products: z
@@ -180,6 +188,7 @@ export type CreateProductState = {
     name?: string;
     sizeType?: string;
     season?: string;
+    purposes?: string;
     primaryImageId?: string;
     products?: ProductFieldErrors[];
   };
@@ -260,6 +269,7 @@ export function parseCreateProductForm(formData: FormData) {
     name: String(formData.get("name") ?? ""),
     sizeType: String(formData.get("sizeType") ?? ""),
     season: String(formData.get("season") ?? ""),
+    purposes: formData.getAll("purposes").map(String).filter(Boolean),
     primaryImageId: String(formData.get("primaryImageId") ?? ""),
     pendingColors: parsePendingColors(formData),
     products: parseProducts(formData),
@@ -305,6 +315,7 @@ export function fieldErrorsFromZod(
       head === "name" ||
       head === "sizeType" ||
       head === "season" ||
+      head === "purposes" ||
       head === "primaryImageId"
     ) {
       fieldErrors[head] ??= issue.message;

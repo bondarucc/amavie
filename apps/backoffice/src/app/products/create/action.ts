@@ -94,6 +94,7 @@ export async function createProduct(
     name,
     sizeType,
     season,
+    purposes,
     products,
     pendingColors,
     primaryImageId,
@@ -141,6 +142,7 @@ export async function createProduct(
           name,
           sizeType,
           season,
+          purposes,
           products: {
             create: products.map((product) => ({
               externalId: product.externalId,

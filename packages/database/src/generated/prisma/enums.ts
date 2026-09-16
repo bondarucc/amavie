@@ -54,6 +54,17 @@ export const ModelSeason = {
 export type ModelSeason = (typeof ModelSeason)[keyof typeof ModelSeason]
 
 
+export const ModelPurpose = {
+  Everyday: 'Everyday',
+  Dressy: 'Dressy',
+  Sport: 'Sport',
+  Home: 'Home',
+  Business: 'Business'
+} as const
+
+export type ModelPurpose = (typeof ModelPurpose)[keyof typeof ModelPurpose]
+
+
 export const WarehouseStockImportState = {
   draft: 'draft',
   applied: 'applied'

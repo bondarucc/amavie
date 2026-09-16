@@ -1,4 +1,9 @@
-import { ModelSeason, ModelType, SizeType } from "@amavie/database/browser";
+import {
+  ModelPurpose,
+  ModelSeason,
+  ModelType,
+  SizeType,
+} from "@amavie/database/browser";
 
 export const PRODUCTS_CACHE_TAG = "products";
 
@@ -65,9 +70,18 @@ export const MODEL_SEASON_LABELS: Record<ModelSeason, string> = {
   MidSeason: "Демисезон",
 };
 
+export const MODEL_PURPOSE_LABELS: Record<ModelPurpose, string> = {
+  Everyday: "На каждый день",
+  Dressy: "Нарядный",
+  Sport: "Спортивный",
+  Home: "Домашний",
+  Business: "Деловой",
+};
+
 export const MODEL_TYPES = Object.values(ModelType);
 export const SIZE_TYPES = Object.values(SizeType);
 export const MODEL_SEASONS = Object.values(ModelSeason);
+export const MODEL_PURPOSES = Object.values(ModelPurpose);
 
 export const PRODUCT_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
 

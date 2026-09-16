@@ -10,7 +10,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { ModelSeason, ModelType, SizeType } from "@amavie/database/browser";
+import {
+  ModelPurpose,
+  ModelSeason,
+  ModelType,
+  SizeType,
+} from "@amavie/database/browser";
 import type { ColorOption } from "../../colors/color";
 import type { CreateProductState, ProductFieldErrors } from "../schema";
 import { MAX_IMAGES_PER_COLOR, PRODUCT_IMAGE_TYPES } from "../const";
@@ -21,6 +26,7 @@ export type ModelDraft = {
   name: string;
   sizeType: SizeType;
   season: ModelSeason | null;
+  purposes: ModelPurpose[];
 };
 
 export type ImageItem = {
@@ -75,6 +81,7 @@ const emptyModel = {
   name: "",
   sizeType: SizeType.Letter,
   season: null,
+  purposes: [] as ModelPurpose[],
 } as const satisfies ModelDraft;
 
 const firstProductId = "product-0";

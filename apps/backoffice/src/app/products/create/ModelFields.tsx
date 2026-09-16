@@ -11,7 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
+  MODEL_PURPOSE_LABELS,
+  MODEL_PURPOSES,
   MODEL_SEASON_LABELS,
   MODEL_SEASONS,
   MODEL_TYPE_LABELS,
@@ -103,6 +106,30 @@ export function ModelFields() {
           ))}
         </RadioGroup>
         <FieldError>{fieldErrors?.season}</FieldError>
+      </Field>
+
+      <Field>
+        <FieldLabel>Назначение</FieldLabel>
+        <ToggleGroup
+          multiple
+          variant="outline"
+          className="flex w-full flex-wrap"
+          value={model.purposes}
+          onValueChange={(value) => {
+            updateModel({
+              purposes: MODEL_PURPOSES.filter((purpose) =>
+                value.includes(purpose),
+              ),
+            });
+          }}
+        >
+          {MODEL_PURPOSES.map((value) => (
+            <ToggleGroupItem key={value} value={value}>
+              {MODEL_PURPOSE_LABELS[value]}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <FieldError>{fieldErrors?.purposes}</FieldError>
       </Field>
     </>
   );

@@ -49,17 +49,26 @@ enum ModelSeason {
   MidSeason
 }
 
+enum ModelPurpose {
+  Everyday
+  Dressy
+  Sport
+  Home
+  Business
+}
+
 model Model {
-  id             String        @id @default(uuid())
+  id             String         @id @default(uuid())
   type           ModelType
-  name           String        @unique
+  name           String         @unique
   sizeType       SizeType
   season         ModelSeason
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  purposes       ModelPurpose[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   products       Product[]
-  primaryImageId String?       @unique
-  primaryImage   ProductImage? @relation("ModelPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
+  primaryImageId String?        @unique
+  primaryImage   ProductImage?  @relation("ModelPrimaryImage", fields: [primaryImageId], references: [id], onDelete: SetNull)
 
   @@index([type])
 }
