@@ -29,6 +29,7 @@ export type ModelMinAggregateOutputType = {
   type: $Enums.ModelType | null
   name: string | null
   sizeType: $Enums.SizeType | null
+  height: string | null
   season: $Enums.ModelSeason | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -40,6 +41,7 @@ export type ModelMaxAggregateOutputType = {
   type: $Enums.ModelType | null
   name: string | null
   sizeType: $Enums.SizeType | null
+  height: string | null
   season: $Enums.ModelSeason | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -51,6 +53,7 @@ export type ModelCountAggregateOutputType = {
   type: number
   name: number
   sizeType: number
+  height: number
   season: number
   purposes: number
   createdAt: number
@@ -65,6 +68,7 @@ export type ModelMinAggregateInputType = {
   type?: true
   name?: true
   sizeType?: true
+  height?: true
   season?: true
   createdAt?: true
   updatedAt?: true
@@ -76,6 +80,7 @@ export type ModelMaxAggregateInputType = {
   type?: true
   name?: true
   sizeType?: true
+  height?: true
   season?: true
   createdAt?: true
   updatedAt?: true
@@ -87,6 +92,7 @@ export type ModelCountAggregateInputType = {
   type?: true
   name?: true
   sizeType?: true
+  height?: true
   season?: true
   purposes?: true
   createdAt?: true
@@ -172,6 +178,7 @@ export type ModelGroupByOutputType = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes: $Enums.ModelPurpose[]
   createdAt: Date
@@ -205,6 +212,7 @@ export type ModelWhereInput = {
   type?: Prisma.EnumModelTypeFilter<"Model"> | $Enums.ModelType
   name?: Prisma.StringFilter<"Model"> | string
   sizeType?: Prisma.EnumSizeTypeFilter<"Model"> | $Enums.SizeType
+  height?: Prisma.StringFilter<"Model"> | string
   season?: Prisma.EnumModelSeasonFilter<"Model"> | $Enums.ModelSeason
   purposes?: Prisma.EnumModelPurposeNullableListFilter<"Model">
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
@@ -219,6 +227,7 @@ export type ModelOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   name?: Prisma.SortOrder
   sizeType?: Prisma.SortOrder
+  height?: Prisma.SortOrder
   season?: Prisma.SortOrder
   purposes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -237,6 +246,7 @@ export type ModelWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ModelWhereInput | Prisma.ModelWhereInput[]
   type?: Prisma.EnumModelTypeFilter<"Model"> | $Enums.ModelType
   sizeType?: Prisma.EnumSizeTypeFilter<"Model"> | $Enums.SizeType
+  height?: Prisma.StringFilter<"Model"> | string
   season?: Prisma.EnumModelSeasonFilter<"Model"> | $Enums.ModelSeason
   purposes?: Prisma.EnumModelPurposeNullableListFilter<"Model">
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
@@ -250,6 +260,7 @@ export type ModelOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   name?: Prisma.SortOrder
   sizeType?: Prisma.SortOrder
+  height?: Prisma.SortOrder
   season?: Prisma.SortOrder
   purposes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -268,6 +279,7 @@ export type ModelScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumModelTypeWithAggregatesFilter<"Model"> | $Enums.ModelType
   name?: Prisma.StringWithAggregatesFilter<"Model"> | string
   sizeType?: Prisma.EnumSizeTypeWithAggregatesFilter<"Model"> | $Enums.SizeType
+  height?: Prisma.StringWithAggregatesFilter<"Model"> | string
   season?: Prisma.EnumModelSeasonWithAggregatesFilter<"Model"> | $Enums.ModelSeason
   purposes?: Prisma.EnumModelPurposeNullableListFilter<"Model">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
@@ -280,6 +292,7 @@ export type ModelCreateInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -293,6 +306,7 @@ export type ModelUncheckedCreateInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -306,6 +320,7 @@ export type ModelUpdateInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -319,6 +334,7 @@ export type ModelUncheckedUpdateInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,6 +348,7 @@ export type ModelCreateManyInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -344,6 +361,7 @@ export type ModelUpdateManyMutationInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -355,6 +373,7 @@ export type ModelUncheckedUpdateManyInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -375,6 +394,7 @@ export type ModelCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   name?: Prisma.SortOrder
   sizeType?: Prisma.SortOrder
+  height?: Prisma.SortOrder
   season?: Prisma.SortOrder
   purposes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -387,6 +407,7 @@ export type ModelMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   name?: Prisma.SortOrder
   sizeType?: Prisma.SortOrder
+  height?: Prisma.SortOrder
   season?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -398,6 +419,7 @@ export type ModelMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   name?: Prisma.SortOrder
   sizeType?: Prisma.SortOrder
+  height?: Prisma.SortOrder
   season?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -490,6 +512,7 @@ export type ModelCreateWithoutProductsInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -502,6 +525,7 @@ export type ModelUncheckedCreateWithoutProductsInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -530,6 +554,7 @@ export type ModelUpdateWithoutProductsInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -542,6 +567,7 @@ export type ModelUncheckedUpdateWithoutProductsInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -554,6 +580,7 @@ export type ModelCreateWithoutPrimaryImageInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -566,6 +593,7 @@ export type ModelUncheckedCreateWithoutPrimaryImageInput = {
   type: $Enums.ModelType
   name: string
   sizeType: $Enums.SizeType
+  height: string
   season: $Enums.ModelSeason
   purposes?: Prisma.ModelCreatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Date | string
@@ -594,6 +622,7 @@ export type ModelUpdateWithoutPrimaryImageInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -606,6 +635,7 @@ export type ModelUncheckedUpdateWithoutPrimaryImageInput = {
   type?: Prisma.EnumModelTypeFieldUpdateOperationsInput | $Enums.ModelType
   name?: Prisma.StringFieldUpdateOperationsInput | string
   sizeType?: Prisma.EnumSizeTypeFieldUpdateOperationsInput | $Enums.SizeType
+  height?: Prisma.StringFieldUpdateOperationsInput | string
   season?: Prisma.EnumModelSeasonFieldUpdateOperationsInput | $Enums.ModelSeason
   purposes?: Prisma.ModelUpdatepurposesInput | $Enums.ModelPurpose[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -649,6 +679,7 @@ export type ModelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   type?: boolean
   name?: boolean
   sizeType?: boolean
+  height?: boolean
   season?: boolean
   purposes?: boolean
   createdAt?: boolean
@@ -664,6 +695,7 @@ export type ModelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   type?: boolean
   name?: boolean
   sizeType?: boolean
+  height?: boolean
   season?: boolean
   purposes?: boolean
   createdAt?: boolean
@@ -677,6 +709,7 @@ export type ModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   type?: boolean
   name?: boolean
   sizeType?: boolean
+  height?: boolean
   season?: boolean
   purposes?: boolean
   createdAt?: boolean
@@ -690,6 +723,7 @@ export type ModelSelectScalar = {
   type?: boolean
   name?: boolean
   sizeType?: boolean
+  height?: boolean
   season?: boolean
   purposes?: boolean
   createdAt?: boolean
@@ -697,7 +731,7 @@ export type ModelSelectScalar = {
   primaryImageId?: boolean
 }
 
-export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "sizeType" | "season" | "purposes" | "createdAt" | "updatedAt" | "primaryImageId", ExtArgs["result"]["model"]>
+export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "sizeType" | "height" | "season" | "purposes" | "createdAt" | "updatedAt" | "primaryImageId", ExtArgs["result"]["model"]>
 export type ModelInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Model$productsArgs<ExtArgs>
   primaryImage?: boolean | Prisma.Model$primaryImageArgs<ExtArgs>
@@ -721,6 +755,7 @@ export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     type: $Enums.ModelType
     name: string
     sizeType: $Enums.SizeType
+    height: string
     season: $Enums.ModelSeason
     purposes: $Enums.ModelPurpose[]
     createdAt: Date
@@ -1155,6 +1190,7 @@ export interface ModelFieldRefs {
   readonly type: Prisma.FieldRef<"Model", 'ModelType'>
   readonly name: Prisma.FieldRef<"Model", 'String'>
   readonly sizeType: Prisma.FieldRef<"Model", 'SizeType'>
+  readonly height: Prisma.FieldRef<"Model", 'String'>
   readonly season: Prisma.FieldRef<"Model", 'ModelSeason'>
   readonly purposes: Prisma.FieldRef<"Model", 'ModelPurpose[]'>
   readonly createdAt: Prisma.FieldRef<"Model", 'DateTime'>

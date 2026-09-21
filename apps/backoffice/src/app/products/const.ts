@@ -41,6 +41,8 @@ export const NUMERIC_SIZES = [
 export const EXTERNAL_ID_PATTERN = /^\d\.\d{4} [A-Za-z]\d$/;
 export const DIMENSION_PATTERN = /^\d+x\d+$/;
 export const NAME_PATTERN = /^\S+$/;
+export const HEIGHT_PATTERN = /^\d{3}-\d{3}$/;
+export const DEFAULT_HEIGHT = "164-168";
 
 export const MODEL_TYPE_LABELS: Record<ModelType, string> = {
   Trousers: "Брюки",

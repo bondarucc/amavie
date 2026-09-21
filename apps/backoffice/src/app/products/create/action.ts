@@ -93,6 +93,7 @@ export async function createProduct(
     type,
     name,
     sizeType,
+    height,
     season,
     purposes,
     products,
@@ -141,6 +142,7 @@ export async function createProduct(
           type,
           name,
           sizeType,
+          height,
           season,
           purposes,
           products: {

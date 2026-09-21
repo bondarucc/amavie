@@ -18,13 +18,18 @@ import {
 } from "@amavie/database/browser";
 import type { ColorOption } from "../../colors/color";
 import type { CreateProductState, ProductFieldErrors } from "../schema";
-import { MAX_IMAGES_PER_COLOR, PRODUCT_IMAGE_TYPES } from "../const";
+import {
+  DEFAULT_HEIGHT,
+  MAX_IMAGES_PER_COLOR,
+  PRODUCT_IMAGE_TYPES,
+} from "../const";
 import { deleteImage, uploadImage, uploadLimiter } from "./uploadImage";
 
 export type ModelDraft = {
   type: ModelType | null;
   name: string;
   sizeType: SizeType;
+  height: string;
   season: ModelSeason | null;
   purposes: ModelPurpose[];
 };
@@ -80,6 +85,7 @@ const emptyModel = {
   type: null,
   name: "",
   sizeType: SizeType.Letter,
+  height: DEFAULT_HEIGHT,
   season: null,
   purposes: [] as ModelPurpose[],
 } as const satisfies ModelDraft;

@@ -9,6 +9,7 @@ import { HEX_PATTERN, normalizeDisplayValue } from "../colors/color";
 import {
   DIMENSION_PATTERN,
   EXTERNAL_ID_PATTERN,
+  HEIGHT_PATTERN,
   LETTER_SIZES,
   MAX_IMAGES_PER_COLOR,
   MIN_IMAGES_PER_COLOR,
@@ -67,6 +68,10 @@ export const createProductSchema = z
       .trim()
       .regex(NAME_PATTERN, "Название должно быть одним словом"),
     sizeType: z.enum(SizeType, { error: "Выберите тип размера" }),
+    height: z
+      .string()
+      .trim()
+      .regex(HEIGHT_PATTERN, "Формат ростовки: 164-168"),
     season: z.enum(ModelSeason, { error: "Выберите сезон" }),
     purposes: z
       .array(z.enum(ModelPurpose))
@@ -187,6 +192,7 @@ export type CreateProductState = {
     type?: string;
     name?: string;
     sizeType?: string;
+    height?: string;
     season?: string;
     purposes?: string;
     primaryImageId?: string;
@@ -268,6 +274,7 @@ export function parseCreateProductForm(formData: FormData) {
     type: String(formData.get("type") ?? ""),
     name: String(formData.get("name") ?? ""),
     sizeType: String(formData.get("sizeType") ?? ""),
+    height: String(formData.get("height") ?? ""),
     season: String(formData.get("season") ?? ""),
     purposes: formData.getAll("purposes").map(String).filter(Boolean),
     primaryImageId: String(formData.get("primaryImageId") ?? ""),
@@ -314,6 +321,7 @@ export function fieldErrorsFromZod(
       head === "type" ||
       head === "name" ||
       head === "sizeType" ||
+      head === "height" ||
       head === "season" ||
       head === "purposes" ||
       head === "primaryImageId"

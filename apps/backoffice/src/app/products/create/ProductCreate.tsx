@@ -100,6 +100,7 @@ function FormHiddenInputs() {
       <input type="hidden" name="type" value={model.type ?? ""} />
       <input type="hidden" name="name" value={model.name} />
       <input type="hidden" name="sizeType" value={model.sizeType} />
+      <input type="hidden" name="height" value={model.height} />
       <input type="hidden" name="season" value={model.season ?? ""} />
       {model.purposes.map((purpose) => (
         <input key={purpose} type="hidden" name="purposes" value={purpose} />

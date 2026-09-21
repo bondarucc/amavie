@@ -1297,6 +1297,7 @@ export const ModelScalarFieldEnum = {
   type: 'type',
   name: 'name',
   sizeType: 'sizeType',
+  height: 'height',
   season: 'season',
   purposes: 'purposes',
   createdAt: 'createdAt',

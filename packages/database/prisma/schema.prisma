@@ -62,6 +62,7 @@ model Model {
   type           ModelType
   name           String         @unique
   sizeType       SizeType
+  height         String
   season         ModelSeason
   purposes       ModelPurpose[]
   createdAt      DateTime       @default(now())

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
+  HEIGHT_PATTERN,
   MODEL_PURPOSE_LABELS,
   MODEL_PURPOSES,
   MODEL_SEASON_LABELS,
@@ -83,6 +84,28 @@ export function ModelFields() {
           ))}
         </RadioGroup>
         <FieldError>{fieldErrors?.sizeType}</FieldError>
+      </Field>
+
+      <Field>
+        <FieldLabel htmlFor="model-height">Ростовка</FieldLabel>
+        <Input
+          id="model-height"
+          value={model.height}
+          onChange={(event) => updateModel({ height: event.target.value })}
+          placeholder="164-168"
+          pattern="[0-9]{3}-[0-9]{3}"
+          maxLength={7}
+          required
+          aria-invalid={
+            !!fieldErrors?.height || !HEIGHT_PATTERN.test(model.height)
+          }
+        />
+        <FieldError>
+          {fieldErrors?.height ??
+            (!HEIGHT_PATTERN.test(model.height)
+              ? "Формат ростовки: 164-168"
+              : undefined)}
+        </FieldError>
       </Field>
 
       <Field>
