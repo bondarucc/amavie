@@ -61,14 +61,14 @@ export function ColorImageGallery({ colors }: ColorImageGalleryProps) {
             key={image.id}
             type="button"
             onClick={() => setPreviewFilename(image.filename)}
-            className="relative size-21 shrink-0 overflow-hidden rounded-(--radius) border transition-opacity hover:opacity-80"
+            className="relative w-21 aspect-2/3 md:w-56 shrink-0 overflow-hidden rounded-(--radius) border transition-opacity hover:opacity-80"
             aria-label="Открыть изображение"
           >
             <Image
               src={`/products/images/${image.filename}`}
               alt=""
               fill
-              sizes="84px"
+              sizes="(max-width: 640px) 84px, 256px"
               className="object-contain"
             />
           </button>
