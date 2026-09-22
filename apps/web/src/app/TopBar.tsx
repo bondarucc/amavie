@@ -27,7 +27,10 @@ function NavBar() {
           <NavigationMenuLink render={<Link href="/">Главная</Link>} />
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink>Каталог</NavigationMenuLink>
+          <NavigationMenuLink
+            active={pathname.includes("catalog")}
+            render={<Link href="/catalog">Каталог</Link>}
+          />
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink>Коллаборации</NavigationMenuLink>
