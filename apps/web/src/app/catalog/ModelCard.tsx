@@ -5,7 +5,6 @@ import type {
   ModelType,
 } from "@amavie/database/browser";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { BuyButton } from "./BuyButton";
 import {
   MODEL_PURPOSE_LABELS,
   MODEL_SEASON_LABELS,
@@ -66,9 +66,7 @@ export function ModelCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button type="button" className="w-full">
-          Купить
-        </Button>
+        <BuyButton description={title} />
       </CardFooter>
     </Card>
   );

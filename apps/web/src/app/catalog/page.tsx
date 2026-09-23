@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import Script from "next/script";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
 import { ModelCard } from "./ModelCard";
@@ -7,6 +8,10 @@ import { PRODUCTS_CACHE_TAG } from "./const";
 export default function CatalogPage() {
   return (
     <div className="mx-auto w-full max-w-7xl px-6 py-10">
+      <Script
+        src="https://js.bepaid.by/widget/be_gateway.js"
+        strategy="afterInteractive"
+      />
       <Suspense fallback={<p className="text-muted-foreground">Загрузка…</p>}>
         <ModelList />
       </Suspense>
@@ -14,12 +19,12 @@ export default function CatalogPage() {
   );
 }
 
-async function ModelList() {
+async function getModels() {
   "use cache";
   cacheLife("hours");
   cacheTag(PRODUCTS_CACHE_TAG);
 
-  const models = await prisma.model.findMany({
+  return prisma.model.findMany({
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
@@ -35,6 +40,10 @@ async function ModelList() {
       },
     },
   });
+}
+
+async function ModelList() {
+  const models = await getModels();
 
   if (models.length === 0) {
     return <p className="text-muted-foreground">Пока нет товаров.</p>;
