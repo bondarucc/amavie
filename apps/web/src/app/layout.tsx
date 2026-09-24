@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, EB_Garamond } from "next/font/google";
+import { Figtree, Fraunces } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import {
@@ -10,19 +10,18 @@ import {
 } from "@/components/ui/navigation-menu";
 import TopBar from "./TopBar";
 
-const ebGaramond = EB_Garamond({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-serif",
+  weight: "500",
+  variable: "--font-fraunces",
+  display: "swap",
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const figtree = Figtree({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-figtree",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,12 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn(
-        geistSans.variable,
-        geistMono.variable,
-        "font-serif",
-        ebGaramond.variable,
-      )}
+      className={cn(figtree.variable, fraunces.variable)}
     >
       <body>
         <TopBar />

@@ -24,7 +24,8 @@
     "db:generate": "pnpm --filter @amavie/database generate",
     "db:migrate": "pnpm --filter @amavie/database migrate",
     "db:studio": "pnpm --filter @amavie/database studio",
-    "db:reset": "pnpm --filter @amavie/database reset"
+    "db:reset": "pnpm --filter @amavie/database reset",
+    "tunnel": "ssh -R 80:localhost:3001 serveo.net"
   },
   "devDependencies": {
     "eslint": "^9.39.5",

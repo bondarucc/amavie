@@ -7,7 +7,7 @@ import { PRODUCTS_CACHE_TAG } from "./const";
 
 export default function CatalogPage() {
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-10">
+    <div className="mx-auto w-full max-w-page px-gutter ">
       <Script
         src="https://js.bepaid.by/widget/be_gateway.js"
         strategy="afterInteractive"
@@ -46,11 +46,15 @@ async function ModelList() {
   const models = await getModels();
 
   if (models.length === 0) {
-    return <p className="text-muted-foreground">Пока нет товаров.</p>;
+    return (
+      <p className="mt-8 font-display text-h3 text-foreground">
+        Пока нет товаров.
+      </p>
+    );
   }
 
   return (
-    <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <ul className="mt-8 grid grid-cols-2 gap-grid lg:grid-cols-3">
       {models.map((model) => (
         <li key={model.id}>
           <ModelCard

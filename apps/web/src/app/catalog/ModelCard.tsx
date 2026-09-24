@@ -5,13 +5,6 @@ import type {
   ModelType,
 } from "@amavie/database/browser";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { BuyButton } from "./BuyButton";
 import {
   MODEL_PURPOSE_LABELS,
@@ -39,35 +32,37 @@ export function ModelCard({
   const title = `${MODEL_TYPE_LABELS[type]} ${name}`;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <div className="relative aspect-2667/4000 w-full bg-muted">
-          {primaryImage?.filename ? (
-            <Image
-              src={`/products/images/${primaryImage.filename}`}
-              alt={title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 320px"
-              className="object-contain"
-            />
-          ) : null}
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          <Badge variant="secondary">{height}</Badge>
-          <Badge variant="secondary">{MODEL_SEASON_LABELS[season]}</Badge>
-          {purposes.map((purpose) => (
-            <Badge key={purpose} variant="secondary">
-              {MODEL_PURPOSE_LABELS[purpose]}
-            </Badge>
-          ))}
-        </div>
-      </CardContent>
-      <CardFooter>
-        <BuyButton description={title} />
-      </CardFooter>
-    </Card>
+    <article className="group flex flex-col gap-3">
+      <div className="relative aspect-product w-full overflow-hidden rounded-none bg-muted">
+        {primaryImage?.filename ? (
+          <Image
+            src={`/products/images/${primaryImage.filename}`}
+            alt={title}
+            fill
+            sizes="(max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center transition-transform duration-700 ease-brand motion-safe:group-hover:scale-[1.03]"
+          />
+        ) : null}
+      </div>
+      <h2 className="font-sans text-sm text-foreground">{title}</h2>
+      <div className="flex flex-wrap gap-1.5">
+        <Badge variant="outline" className="text-muted-foreground">
+          {height}
+        </Badge>
+        <Badge variant="outline" className="text-muted-foreground">
+          {MODEL_SEASON_LABELS[season]}
+        </Badge>
+        {purposes.map((purpose) => (
+          <Badge
+            key={purpose}
+            variant="outline"
+            className="text-muted-foreground"
+          >
+            {MODEL_PURPOSE_LABELS[purpose]}
+          </Badge>
+        ))}
+      </div>
+      <BuyButton description={title} />
+    </article>
   );
 }

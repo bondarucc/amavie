@@ -107,12 +107,16 @@ export function BuyButton({ description }: BuyButtonProps) {
     }
   }
 
-  const label = busy ? "Загрузка…" : status ? STATUS_LABELS[status] : "Купить";
+  const label = busy
+    ? "Загрузка…"
+    : status
+      ? STATUS_LABELS[status]
+      : "Купить в 1 клик";
 
   return (
     <Button
       type="button"
-      className="w-full"
+      className="h-11 w-full text-primary-foreground"
       disabled={busy}
       onClick={handleBuy}
     >
