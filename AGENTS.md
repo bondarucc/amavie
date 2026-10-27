@@ -14,6 +14,7 @@ This repository is a pnpm monorepo with two standalone Next.js applications. Mor
 Both apps depend on these workspace packages:
 
 - **`database`** (`@amavie/database`) — Prisma schema and `createPrismaClient()` for each app to instantiate a Prisma client.
+- **`rocket-sms`** (`@amavie/rocket-sms`) — server-only RocketSMS client (`send` and `bulkSend`) for both apps.
 - **`shared`** (`@amavie/shared`) — types, constants, helpers, and React components used by both apps.
 - **`eslint-config`**, **`jest-config`**, **`prettier-config`**, **`typescript-config`** — shared config for those tools.
 

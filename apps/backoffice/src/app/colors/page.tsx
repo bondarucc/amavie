@@ -9,7 +9,8 @@ export default function ColorsPage() {
         <h1 className="text-2xl font-semibold mb-1">Словарь цветов</h1>
         <p className="text-muted-foreground">
           Справочник цветов для товаров. Название нельзя изменить после
-          создания.
+          создания. Цвет можно удалить, если он еще не использовался при
+          создании моделей.
         </p>
       </div>
       <Suspense fallback={<p className="text-muted-foreground">Загрузка…</p>}>

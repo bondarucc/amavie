@@ -50,7 +50,10 @@ export default function Sidebar({ children }: PropsWithChildren) {
                 />
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>СМС рассылка</SidebarMenuButton>
+                <SidebarMenuButton
+                  isActive={pathname.startsWith("/sms")}
+                  render={<Link href="/sms">СМС рассылка</Link>}
+                />
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton>Скидки и промокоды</SidebarMenuButton>
