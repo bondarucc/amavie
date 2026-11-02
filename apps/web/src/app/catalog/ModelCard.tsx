@@ -5,7 +5,9 @@ import type {
   ModelType,
 } from "@amavie/database/browser";
 import { Badge } from "@/components/ui/badge";
+import { AddToBasketButton } from "./AddToBasketButton";
 import { BuyButton } from "./BuyButton";
+import type { BasketColorOption } from "./colors";
 import {
   MODEL_PURPOSE_LABELS,
   MODEL_SEASON_LABELS,
@@ -19,6 +21,7 @@ type ModelCardProps = {
   season: ModelSeason;
   purposes: ModelPurpose[];
   primaryImage: { filename: string } | null;
+  colors: BasketColorOption[];
 };
 
 export function ModelCard({
@@ -28,11 +31,12 @@ export function ModelCard({
   season,
   purposes,
   primaryImage,
+  colors,
 }: ModelCardProps) {
   const title = `${MODEL_TYPE_LABELS[type]} ${name}`;
 
   return (
-    <article className="group flex flex-col gap-3">
+    <article className="group @container flex flex-col gap-3">
       <div className="relative aspect-product w-full overflow-hidden rounded-none bg-muted">
         {primaryImage?.filename ? (
           <Image
@@ -62,7 +66,12 @@ export function ModelCard({
           </Badge>
         ))}
       </div>
-      <BuyButton description={title} />
+      <div className="flex flex-col gap-2 @[17rem]:flex-row">
+        <AddToBasketButton title={title} colors={colors} />
+        <div className="min-w-0 @[17rem]:flex-1">
+          <BuyButton description={title} />
+        </div>
+      </div>
     </article>
   );
 }

@@ -2,6 +2,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import Script from "next/script";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
+import { groupModelColors } from "./colors";
 import { ModelCard } from "./ModelCard";
 import { PRODUCTS_CACHE_TAG } from "./const";
 
@@ -38,6 +39,27 @@ async function getModels() {
           filename: true,
         },
       },
+      products: {
+        select: {
+          colors: {
+            select: {
+              colorDefinition: {
+                select: {
+                  id: true,
+                  displayValue: true,
+                  hex: true,
+                },
+              },
+              variants: {
+                select: {
+                  id: true,
+                  size: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 }
@@ -64,6 +86,7 @@ async function ModelList() {
             season={model.season}
             purposes={model.purposes}
             primaryImage={model.primaryImage}
+            colors={groupModelColors(model.products)}
           />
         </li>
       ))}

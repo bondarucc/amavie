@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import { Figtree, Fraunces } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+import { BasketProvider } from "./basket/BasketProvider";
 import TopBar from "./TopBar";
 
 const fraunces = Fraunces({
@@ -31,13 +26,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={cn(figtree.variable, fraunces.variable)}
-    >
+    <html lang="en" className={cn(figtree.variable, fraunces.variable)}>
       <body>
-        <TopBar />
-        {children}
+        <BasketProvider>
+          <TopBar />
+          {children}
+        </BasketProvider>
       </body>
     </html>
   );
