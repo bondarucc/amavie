@@ -3,6 +3,7 @@ import { Figtree, Fraunces } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { BasketProvider } from "./basket/BasketProvider";
+import { RegionProvider } from "./region/RegionProvider";
 import TopBar from "./TopBar";
 
 const fraunces = Fraunces({
@@ -28,10 +29,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={cn(figtree.variable, fraunces.variable)}>
       <body>
-        <BasketProvider>
-          <TopBar />
-          {children}
-        </BasketProvider>
+        <RegionProvider>
+          <BasketProvider>
+            <TopBar />
+            {children}
+          </BasketProvider>
+        </RegionProvider>
       </body>
     </html>
   );
