@@ -58,7 +58,7 @@ export function AddToBasketButton({ title, colors }: AddToBasketButtonProps) {
       <Button
         type="button"
         variant="outline"
-        className="h-11 w-full px-2 @[17rem]:w-auto @[17rem]:flex-1"
+        className="h-11 w-full"
         disabled={colors.length === 0}
         onClick={() => setOpen(true)}
       >

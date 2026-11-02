@@ -1,5 +1,4 @@
 import { cacheLife, cacheTag } from "next/cache";
-import Script from "next/script";
 import { Suspense } from "react";
 import prisma from "@/lib/prisma";
 import { groupModelColors } from "./colors";
@@ -9,10 +8,6 @@ import { PRODUCTS_CACHE_TAG } from "./const";
 export default function CatalogPage() {
   return (
     <div className="mx-auto w-full max-w-page px-gutter ">
-      <Script
-        src="https://js.bepaid.by/widget/be_gateway.js"
-        strategy="afterInteractive"
-      />
       <Suspense fallback={<p className="text-muted-foreground">Загрузка…</p>}>
         <ModelList />
       </Suspense>
